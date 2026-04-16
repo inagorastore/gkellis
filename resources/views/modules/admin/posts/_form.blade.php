@@ -1,6 +1,4 @@
 @csrf
-<link rel="stylesheet" href="https://unpkg.com/trix@2.1.12/dist/trix.css">
-<script src="https://unpkg.com/trix@2.1.12/dist/trix.umd.min.js"></script>
 <div class="space-y-4 rounded-lg bg-white p-6 shadow">
     <label class="block space-y-1 text-sm text-gray-700">
         <span>Category</span>
