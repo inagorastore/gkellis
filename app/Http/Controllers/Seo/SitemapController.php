@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\Post;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class SitemapController extends Controller
 {
@@ -36,8 +37,31 @@ class SitemapController extends Controller
             ->unique()
             ->values();
 
-        return response()
-            ->view('seo.sitemap', compact('urls'))
-            ->header('Content-Type', 'application/xml');
+        $xml = $this->buildSitemapXml($urls->all());
+
+        return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
+    }
+
+    /**
+     * @param array<int, string> $urls
+     */
+    private function buildSitemapXml(array $urls): string
+    {
+        $entries = collect($urls)
+            ->map(function (string $url): string {
+                $escaped = e($url);
+
+                return "<url>\n<loc>{$escaped}</loc>\n</url>";
+            })
+            ->implode("\n");
+
+        return Str::of('<?xml version="1.0" encoding="UTF-8"?>')
+            ->append("\n")
+            ->append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+            ->append("\n")
+            ->append($entries)
+            ->append("\n")
+            ->append('</urlset>')
+            ->toString();
     }
 }
