@@ -27,17 +27,17 @@
     </datalist>
     <input id="post-title" name="title" value="{{ old('title', $post->title ?? '') }}" placeholder="Title" required class="w-full rounded border-gray-300">
     <input id="post-slug" name="slug" value="{{ old('slug', $post->slug ?? '') }}" placeholder="Slug" class="w-full rounded border-gray-300">
-    <label class="block space-y-1 text-sm text-gray-700">
-        <span>Excerpt</span>
+    <div class="block space-y-1 text-sm text-gray-700">
+        <label for="excerpt-editor"><span>Excerpt</span></label>
         <input id="excerpt-editor" type="hidden" name="excerpt" value="{{ old('excerpt', $post->excerpt ?? '') }}">
         <trix-editor input="excerpt-editor" class="trix-content rounded border border-gray-300 bg-white"></trix-editor>
         <p class="text-xs text-gray-500">Αν το αφήσεις κενό, θα δημιουργηθεί αυτόματα από το body.</p>
-    </label>
-    <label class="block space-y-1 text-sm text-gray-700">
-        <span>Article body</span>
+    </div>
+    <div class="block space-y-1 text-sm text-gray-700">
+        <label for="body-editor"><span>Article body</span></label>
         <input id="body-editor" type="hidden" name="body" value="{{ old('body', $post->body ?? '') }}">
         <trix-editor input="body-editor" class="trix-content rounded border border-gray-300 bg-white"></trix-editor>
-    </label>
+    </div>
     <label class="block space-y-1 text-sm text-gray-700">
         <span>Publication date</span>
         <input type="datetime-local"
