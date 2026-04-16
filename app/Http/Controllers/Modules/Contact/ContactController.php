@@ -41,6 +41,6 @@ class ContactController extends Controller
             ]);
         }
 
-        return back()->with('status', 'Your message has been received.');
+        return back()->with('status', 'Το μήνυμα σας εστάλη επιτυχώς.');
     }
 }

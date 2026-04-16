@@ -72,7 +72,7 @@
     </header>
 
     @if (session('status'))
-        <div class="container" style="margin-top:16px;">
+        <div class="container" style="margin:10px;">
             <div style="border:1px solid #86efac;background:#f0fdf4;color:#166534;padding:12px 14px;border-radius:12px;">
                 {{ session('status') }}
             </div>
