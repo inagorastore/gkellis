@@ -10,6 +10,7 @@
     <meta property="og:title" content="{{ $metaTitle ?? 'Lt. General (Ret.) Website' }}">
     <meta property="og:description" content="{{ $metaDescription ?? 'Official biography, media presence, and publications.' }}">
     <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="fb:app_id" content="937493685856349">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="{{ url()->current() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">

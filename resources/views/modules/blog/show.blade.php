@@ -48,6 +48,18 @@
             padding: 34px 0 18px;
         }
 
+        .article-cover {
+            margin: 0 0 24px;
+        }
+
+        .article-cover img {
+            display: block;
+            width: 100%;
+            max-height: 520px;
+            object-fit: cover;
+            border-radius: 18px;
+        }
+
         .article-card {
             background: #fff;
             border: 1px solid #edf0fb;
@@ -120,6 +132,14 @@
     <section class="article-shell">
         <div class="container">
             <article class="article-card">
+                @if (!empty($post->cover_image_path))
+                    <div class="article-cover">
+                        <img
+                            src="{{ \Illuminate\Support\Facades\Storage::url($post->cover_image_path) }}"
+                            alt="{{ $post->title }}"
+                        >
+                    </div>
+                @endif
                 <div class="article-tags">
                     @if ($post->category)
                         <a href="{{ route('blog.index', ['category' => $post->category->slug]) }}" class="article-chip category">

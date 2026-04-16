@@ -9,6 +9,7 @@
     <meta property="og:title" content="{{ $metaTitle ?? 'Γιώργος Κέλλης' }}" />
     <meta property="og:description" content="{{ $metaDescription ?? 'Η Ξάνθη αξίζει πράξεις, όχι λόγια.' }}" />
     <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="fb:app_id" content="937493685856349" />
     @if (!empty($metaImage))
         <meta property="og:image" content="{{ $metaImage }}" />
     @endif
