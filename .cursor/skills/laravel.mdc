@@ -1,0 +1,21 @@
+---
+alwaysApply: true
+---
+Always follow Laravel best practices.
+
+Architecture:
+
+Controller
+Service
+Repository
+
+Controllers must remain thin.
+
+Use:
+
+Form Requests for validation
+Policies for authorization
+Eloquent models
+Service layer
+
+Follow SOLID principles.

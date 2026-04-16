@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+---
+SEO requirements:
+
+Every page must include:
+
+title
+meta description
+OpenGraph tags
+canonical URL
+
+Generate:
+
+sitemap.xml
+robots.txt
+
+Use structured data for articles.

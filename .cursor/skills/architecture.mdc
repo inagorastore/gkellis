@@ -1,0 +1,20 @@
+---
+alwaysApply: true
+---
+Use modular architecture.
+
+Modules must include:
+
+Pages
+Blog
+Media
+Contact
+
+Each module must have:
+
+Controller
+Model
+Routes
+Views
+
+Code must remain scalable and maintainable.
