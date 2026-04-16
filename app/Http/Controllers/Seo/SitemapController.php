@@ -13,6 +13,16 @@ class SitemapController extends Controller
 {
     public function __invoke(): Response
     {
+        $postUrls = Post::published()
+            ->pluck('slug')
+            ->filter(fn ($slug): bool => is_string($slug) && filled($slug))
+            ->map(fn ($slug): string => route('blog.show', ['post' => $slug]));
+
+        $pageUrls = Page::published()
+            ->pluck('slug')
+            ->filter(fn ($slug): bool => is_string($slug) && filled($slug))
+            ->map(fn ($slug): string => url('/'.$slug));
+
         $urls = collect([
             url('/'),
             route('pages.biography'),
@@ -21,11 +31,10 @@ class SitemapController extends Controller
             route('contact.index'),
             route('pages.privacy'),
             route('pages.cookies'),
-        ])->merge(
-            Post::published()->pluck('slug')->map(fn (string $slug): string => route('blog.show', $slug))
-        )->merge(
-            Page::published()->pluck('slug')->map(fn (string $slug): string => url('/'.$slug))
-        )->unique()->values();
+        ])->merge($postUrls)
+            ->merge($pageUrls)
+            ->unique()
+            ->values();
 
         return response()
             ->view('seo.sitemap', compact('urls'))
