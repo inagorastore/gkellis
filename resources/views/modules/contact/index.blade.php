@@ -43,7 +43,8 @@
                                    name="privacy_policy_accepted"
                                    value="1"
                                    @checked(old('privacy_policy_accepted'))
-                                   style="width:auto;margin-top:2px;">
+                                   style="width:auto;margin-top:2px;"
+                                   required>
                             <span>
                                 Συμφωνώ με την
                                 <a href="{{ route('pages.privacy') }}" style="text-decoration:underline;">πολιτική απορρήτου</a>.
@@ -51,6 +52,12 @@
                         </label>
                         @error('privacy_policy_accepted') <p class="small" style="color:#dc2626;margin-top:6px;">{{ $message }}</p> @enderror
                     </div>
+                    @if (filled(config('services.recaptcha.site_key')))
+                        <div class="full">
+                            <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                            @error('g-recaptcha-response') <p class="small" style="color:#dc2626;margin-top:6px;">{{ $message }}</p> @enderror
+                        </div>
+                    @endif
                     <div class="full">
                         <button type="submit" class="btn">Αποστολή μηνύματος</button>
                     </div>

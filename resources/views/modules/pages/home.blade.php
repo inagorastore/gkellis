@@ -8,7 +8,7 @@
         <div class="hero-kicker">Αντιστράτηγος ε.α. - Επίτιμος Υπαρχηγός ΓΕΣ - Πρώην Υποδιοικήτης ΕΥΠ</div>
         <h1>Με σχέδιο,<br/>πειθαρχία και αγάπη</h1>
         <p>Υπηρέτησα την πατρίδα με συνέπεια και καθήκον. Σήμερα συνεχίζω να προσφέρω με ενότητα, ευθύνη και σεβασμό σε κάθε πολίτη.</p>
-        <a class="btn" href="{{ route('blog.index') }}">Blog</a>
+        <a class="btn" href="{{ route('blog.index') }}" style="padding-inline: 1.75rem;">Άρθρα</a>
       </div>
       <div class="hero-card">
         <img src="{{ asset('images/kellis-hero.png') }}" alt="Γιώργος Κέλλης">
@@ -78,6 +78,12 @@
             </label>
             @error('privacy_policy_accepted') <p class="small" style="color:#dc2626;margin-top:6px;">{{ $message }}</p> @enderror
           </div>
+          @if (filled(config('services.recaptcha.site_key')))
+            <div class="full">
+              <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+              @error('g-recaptcha-response') <p class="small" style="color:#dc2626;margin-top:6px;">{{ $message }}</p> @enderror
+            </div>
+          @endif
           <div class="full"><button class="btn" type="submit">Αποστολή</button></div>
         </form>
       </div>

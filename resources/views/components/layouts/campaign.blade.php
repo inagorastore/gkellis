@@ -12,6 +12,9 @@
     @if (!empty($metaImage))
         <meta property="og:image" content="{{ $metaImage }}" />
     @endif
+    @if (filled(config('services.recaptcha.site_key')))
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endif
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
     <style>
@@ -22,6 +25,11 @@
         .section{padding:80px 0}.section-title{font-size:clamp(1.7rem,2.6vw,2.8rem);line-height:1.2;margin:0 0 16px;font-weight:800;letter-spacing:-.02em}.section-subtitle{color:var(--muted);margin:0 0 32px;max-width:780px}
         .topbar{position:sticky;top:0;z-index:10;background:rgba(15,23,56,.92);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.08)} .nav{display:flex;align-items:center;justify-content:space-between;min-height:74px}
         .logo{font-weight:800;color:#fff;font-size:1.05rem} .menu{display:flex;gap:20px;color:#d7ddff;font-weight:500}.menu a:hover{color:#fff}
+        .menu-toggle{display:none;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.26);border-radius:10px;background:transparent;color:#fff;cursor:pointer}
+        .mobile-menu{display:none;flex-direction:column;gap:8px;padding:0 0 14px}
+        .mobile-menu a{display:block;color:#d7ddff;font-weight:500;padding:10px 12px;border-radius:10px}
+        .mobile-menu a:hover{background:rgba(255,255,255,.08);color:#fff}
+        .mobile-menu.is-open{display:flex}
         .hero{background:linear-gradient(120deg,#0d1533 0%,#1d2f72 65%,#324fb3 100%);color:#fff;overflow:hidden}
         .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:36px;min-height:82vh;padding:48px 0}
         .hero-kicker{color:#ff958f;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:700;margin-bottom:12px}
@@ -38,7 +46,7 @@
         .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;border:1px solid #edf0fb}
         .content{color:var(--muted);font-size:1.05rem}.content p{margin:0 0 18px}
         footer{background:#0e1635;color:#d8def8;padding:34px 0;margin-top:70px}.foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.95rem}
-        @media (max-width: 980px){.hero-grid,.split{grid-template-columns:1fr}.form{grid-template-columns:1fr}.menu{display:none}}
+        @media (max-width: 980px){.hero-grid,.split{grid-template-columns:1fr}.form{grid-template-columns:1fr}.menu{display:none}.menu-toggle{display:inline-flex}}
     </style>
 </head>
 <body>
@@ -51,8 +59,25 @@
                 <a href="{{ route('blog.index') }}">Άρθρα</a>
                 <a href="{{ route('contact.index') }}">Επικοινωνία</a>
             </nav>
+            <button class="menu-toggle" type="button" aria-label="Άνοιγμα μενού" aria-expanded="false" aria-controls="mobile-menu">
+                <span aria-hidden="true">☰</span>
+            </button>
         </div>
+        <nav id="mobile-menu" class="container mobile-menu" aria-label="Κύριο μενού κινητού">
+            <a href="{{ route('pages.home') }}">Αρχική</a>
+            <a href="{{ route('pages.biography') }}">Βιογραφικό</a>
+            <a href="{{ route('blog.index') }}">Άρθρα</a>
+            <a href="{{ route('contact.index') }}">Επικοινωνία</a>
+        </nav>
     </header>
+
+    @if (session('status'))
+        <div class="container" style="margin-top:16px;">
+            <div style="border:1px solid #86efac;background:#f0fdf4;color:#166534;padding:12px 14px;border-radius:12px;">
+                {{ session('status') }}
+            </div>
+        </div>
+    @endif
 
     {{ $slot }}
 
@@ -66,5 +91,17 @@
             </div>
         </div>
     </footer>
+    <script>
+        const menuToggleButton = document.querySelector('.menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuToggleButton && mobileMenu) {
+            menuToggleButton.addEventListener('click', () => {
+                const isExpanded = menuToggleButton.getAttribute('aria-expanded') === 'true';
+                menuToggleButton.setAttribute('aria-expanded', String(!isExpanded));
+                mobileMenu.classList.toggle('is-open', !isExpanded);
+            });
+        }
+    </script>
 </body>
 </html>
