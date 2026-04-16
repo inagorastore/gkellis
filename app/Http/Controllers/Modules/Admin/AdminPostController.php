@@ -189,7 +189,7 @@ class AdminPostController extends Controller
 
         $post->delete();
 
-        return back()->with('status', 'Post deleted.');
+        return redirect()->route('admin.posts.index')->with('status', 'Post deleted.');
     }
 
     private function sanitizeRichText(string $value): string
