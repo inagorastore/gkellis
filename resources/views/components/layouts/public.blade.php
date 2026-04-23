@@ -6,7 +6,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $metaTitle ?? 'Lt. General (Ret.) Website' }}</title>
     <meta name="description" content="{{ $metaDescription ?? 'Official biography, media presence, and publications.' }}">
-    <meta name="msvalidate.01" content="7F0066EB5FE74C5FFBEF6FDB092E1EBD">
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ $metaTitle ?? 'Lt. General (Ret.) Website' }}">
     <meta property="og:description" content="{{ $metaDescription ?? 'Official biography, media presence, and publications.' }}">

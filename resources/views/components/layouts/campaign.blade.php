@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $metaTitle ?? 'Γιώργος Κέλλης' }}</title>
     <meta name="description" content="{{ $metaDescription ?? 'Η Ξάνθη αξίζει πράξεις, όχι λόγια.' }}" />
-    <meta name="msvalidate.01" content="7F0066EB5FE74C5FFBEF6FDB092E1EBD" />
     <meta property="og:type" content="{{ $ogType ?? 'website' }}" />
     <meta property="og:title" content="{{ $metaTitle ?? 'Γιώργος Κέλλης' }}" />
     <meta property="og:description" content="{{ $metaDescription ?? 'Η Ξάνθη αξίζει πράξεις, όχι λόγια.' }}" />
@@ -104,6 +103,15 @@
             </div>
         </div>
     </footer>
+    @if ($hasCookieConsent && filled(env('GA_MEASUREMENT_ID')))
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GA_MEASUREMENT_ID') }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ env('GA_MEASUREMENT_ID') }}');
+        </script>
+    @endif
     <script>
         const menuToggleButton = document.querySelector('.menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
