@@ -103,6 +103,31 @@
             </div>
         </div>
     </footer>
+    @if (!$hasCookieConsent)
+        <div style="position:fixed;inset-inline:0;bottom:0;z-index:60;border-top:1px solid #d1d5db;background:#fff;padding:14px 16px;box-shadow:0 -6px 20px rgba(15,23,56,.12);">
+            <div class="container" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;">
+                <p class="small" style="margin:0;color:#475569;">
+                    Αυτός ο ιστότοπος χρησιμοποιεί cookies για analytics και απόδοση. Μπορείτε να αποδεχτείτε ή να απορρίψετε τα μη απαραίτητα cookies.
+                </p>
+                <div style="display:flex;gap:8px;">
+                    <form method="POST" action="{{ route('pages.cookie-consent') }}">
+                        @csrf
+                        <input type="hidden" name="accepted" value="0">
+                        <button type="submit" style="border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:8px 12px;border-radius:10px;cursor:pointer;">
+                            Απόρριψη
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ route('pages.cookie-consent') }}">
+                        @csrf
+                        <input type="hidden" name="accepted" value="1">
+                        <button type="submit" style="border:1px solid #1e40af;background:#1e40af;color:#fff;padding:8px 12px;border-radius:10px;cursor:pointer;">
+                            Αποδοχή
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
     @if ($hasCookieConsent && filled(env('GA_MEASUREMENT_ID')))
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GA_MEASUREMENT_ID') }}"></script>
         <script>
