@@ -82,13 +82,13 @@
         </div>
     </div>
 
-    @if ($hasCookieConsent && filled(env('GA_MEASUREMENT_ID')))
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GA_MEASUREMENT_ID') }}"></script>
+    @if ($hasCookieConsent && filled(config('services.ga.measurement_id')))
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.ga.measurement_id') }}"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '{{ env('GA_MEASUREMENT_ID') }}');
+            gtag('config', '{{ config('services.ga.measurement_id') }}');
         </script>
     @endif
 </body>
