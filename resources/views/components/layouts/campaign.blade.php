@@ -5,14 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $metaTitle ?? 'Γιώργος Κέλλης' }}</title>
     <meta name="description" content="{{ $metaDescription ?? 'Η Ξάνθη αξίζει πράξεις, όχι λόγια.' }}" />
-    <meta property="og:type" content="article" />
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}" />
     <meta property="og:title" content="{{ $metaTitle ?? 'Γιώργος Κέλλης' }}" />
     <meta property="og:description" content="{{ $metaDescription ?? 'Η Ξάνθη αξίζει πράξεις, όχι λόγια.' }}" />
     <meta property="og:url" content="{{ url()->current() }}" />
     <meta property="fb:app_id" content="937493685856349" />
     @if (!empty($metaImage))
         <meta property="og:image" content="{{ $metaImage }}" />
+        @if (!empty($metaImageWidth))
+            <meta property="og:image:width" content="{{ $metaImageWidth }}" />
+        @endif
+        @if (!empty($metaImageHeight))
+            <meta property="og:image:height" content="{{ $metaImageHeight }}" />
+        @endif
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="{{ $metaImage }}" />
     @endif
+    @isset($head)
+        {{ $head }}
+    @endisset
     @if (filled(config('services.recaptcha.site_key')))
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     @endif

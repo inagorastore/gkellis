@@ -12,10 +12,26 @@
             </div>
             <div class="grid gap-4 md:grid-cols-3">
                 @foreach ($stats as $label => $value)
-                    <div class="rounded-lg bg-white p-6 shadow">
-                        <p class="text-sm uppercase tracking-wide text-gray-500">{{ $label }}</p>
-                        <p class="mt-2 text-3xl font-bold text-gray-900">{{ $value }}</p>
-                    </div>
+                    @php
+                        $normalizedLabel = strtolower($label);
+                        $cardRoute = match ($normalizedLabel) {
+                            'posts' => 'admin.posts.index',
+                            'media' => 'admin.media.index',
+                            default => null,
+                        };
+                    @endphp
+                    @if ($cardRoute)
+                        <a href="{{ route($cardRoute) }}"
+                            class="block rounded-lg bg-white p-6 shadow transition hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-800 focus:ring-offset-2">
+                            <p class="text-sm uppercase tracking-wide text-gray-500">{{ $label }}</p>
+                            <p class="mt-2 text-3xl font-bold text-gray-900">{{ $value }}</p>
+                        </a>
+                    @else
+                        <div class="rounded-lg bg-white p-6 shadow">
+                            <p class="text-sm uppercase tracking-wide text-gray-500">{{ $label }}</p>
+                            <p class="mt-2 text-3xl font-bold text-gray-900">{{ $value }}</p>
+                        </div>
+                    @endif
                 @endforeach
             </div>
         </div>

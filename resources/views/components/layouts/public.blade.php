@@ -29,7 +29,6 @@
             <nav class="flex items-center gap-4 text-sm text-slate-600">
                 <a href="{{ route('pages.biography') }}" class="hover:text-blue-900">Biography</a>
                 <a href="{{ route('blog.index') }}" class="hover:text-blue-900">Blog</a>
-                <a href="{{ route('media.index') }}" class="hover:text-blue-900">Media</a>
                 <a href="{{ route('contact.index') }}" class="hover:text-blue-900">Contact</a>
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="rounded bg-blue-800 px-3 py-1.5 text-white">Admin</a>

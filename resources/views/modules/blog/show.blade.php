@@ -142,7 +142,7 @@
                 @endif
                 <div class="article-tags">
                     @if ($post->category)
-                        <a href="{{ route('blog.index', ['category' => $post->category->slug]) }}" class="article-chip category">
+                        <a href="{{ route('blog.category', ['category' => $post->category->slug]) }}" class="article-chip category">
                             {{ $post->category->name }}
                         </a>
                     @endif

@@ -1,7 +1,41 @@
 <x-layouts.campaign
-  meta-title="Γιώργος Κέλλης | Αρχική"
-  meta-description="Η Ξάνθη αξίζει πράξεις, όχι λόγια. Με σχέδιο, πειθαρχία και αγάπη."
+  meta-title="Γιώργος Κέλλης | Ξάνθη | Επίτιμος Υπαρχηγός ΓΕΣ"
+  meta-description="Γνωρίστε τον Γιώργο Κέλλη, Επίτιμο Υπαρχηγό ΓΕΣ, την πορεία προσφοράς του και τις προτάσεις του για την ανάπτυξη της Ξάνθης και της Θράκης."
+  og-type="website"
+  meta-image="https://gkellis.gr/images/gkellis-og.jpg"
+  meta-image-width="1200"
+  meta-image-height="630"
 >
+  <x-slot:head>
+    <link rel="canonical" href="https://gkellis.gr/">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://gkellis.gr/#website",
+            "url": "https://gkellis.gr/",
+            "name": "Γιώργος Κέλλης"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://gkellis.gr/#person",
+            "name": "Γιώργος Κέλλης",
+            "url": "https://gkellis.gr/",
+            "image": "https://gkellis.gr/images/gkellis.jpg",
+            "jobTitle": "Επίτιμος Υπαρχηγός ΓΕΣ",
+            "sameAs": [
+              "https://gkellis.gr/",
+              "https://gkellis.gr/giorgos-kellis-biography",
+              "https://gkellis.gr/contact"
+            ]
+          }
+        ]
+      }
+    </script>
+  </x-slot:head>
+
   <section class="hero">
     <div class="container hero-grid">
       <div>
@@ -11,14 +45,17 @@
         <a class="btn" href="{{ route('blog.index') }}" style="padding-inline: 1.75rem;">Άρθρα</a>
       </div>
       <div class="hero-card">
-        <img src="{{ asset('images/kellis-hero.png') }}" alt="Γιώργος Κέλλης">
+        <picture>
+          <source srcset="{{ asset('images/gkellis.webp') }}" type="image/webp">
+          <img src="{{ asset('images/kellis-hero.png') }}" alt="Γιώργος Κέλλης" width="597" height="634" loading="eager" fetchpriority="high" decoding="async">
+        </picture>
       </div>
     </div>
   </section>
 
   <section class="section" style="background:var(--bg-soft);">
     <div class="container split">
-      <div class="img-wrap"><img src="{{ asset('images/giorgos-kellis-home.png') }}" alt="Γιώργος Κέλλης"></div>
+      <div class="img-wrap"><img src="{{ asset('images/giorgos-kellis-home.png') }}" alt="Γιώργος Κέλλης" width="740" height="370" loading="lazy" decoding="async"></div>
       <div>
         <h2 class="section-title">Γιώργος Κέλλης</h2>
         <p class="section-subtitle">Επίτιμος Υπαρχηγός ΓΕΣ</p>
@@ -38,6 +75,33 @@
       </div>
     </div>
   </section>
+
+  @if ($featuredPosts->isNotEmpty())
+    <section class="section" style="background:var(--bg-soft);">
+      <div class="container">
+        <h2 class="section-title">Τελευταία άρθρα</h2>
+        <p class="section-subtitle">Ενημέρωση για θέματα τοπικής ανάπτυξης, κοινωνικής συνοχής και δημόσιας ευθύνης.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
+          @foreach ($featuredPosts as $post)
+            <article class="card" style="display:grid;gap:10px;">
+              <h3 style="margin:0;font-size:1.2rem;line-height:1.35;">
+                <a href="{{ route('blog.show', $post) }}" style="text-decoration:underline;">{{ $post->title }}</a>
+              </h3>
+              @if (filled($post->excerpt))
+                <p class="small" style="margin:0;">{{ \Illuminate\Support\Str::limit($post->excerpt, 135) }}</p>
+              @endif
+              @if ($post->published_at)
+                <p class="small" style="margin:0;">
+                  Δημοσίευση:
+                  <time datetime="{{ $post->published_at->toDateString() }}">{{ $post->published_at->format('d/m/Y') }}</time>
+                </p>
+              @endif
+            </article>
+          @endforeach
+        </div>
+      </div>
+    </section>
+  @endif
 
   <section class="section" id="support">
     <div class="container">

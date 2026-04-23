@@ -1,11 +1,80 @@
 <x-layouts.campaign
-  meta-title="Γιώργος Κέλλης | Βιογραφικό"
-  meta-description="Η πορεία και η προσφορά του Γιώργου Κέλλη στην πατρίδα και στον τόπο του."
+  meta-title="Γιώργος Κέλλης Ξάνθη – Βιογραφικό"
+  meta-description="Διαβάστε το βιογραφικό του Γιώργου Κέλλη, την πορεία του στις Ένοπλες Δυνάμεις και τη δημόσια παρουσία του για την ανάπτυξη της Ξάνθης και της Θράκης."
+  meta-image="https://gkellis.gr/images/gkellis-og.jpg"
+  meta-image-width="1200"
+  meta-image-height="630"
 >
+  <x-slot:head>
+    <link rel="canonical" href="https://gkellis.gr/giorgos-kellis-biography">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://gkellis.gr/#person",
+            "name": "Γιώργος Κέλλης",
+            "url": "https://gkellis.gr",
+            "image": "https://gkellis.gr/images/gkellis.jpg",
+            "jobTitle": "Επίτιμος Υπαρχηγός ΓΕΣ",
+            "birthPlace": "Ξάνθη",
+            "alumniOf": "Δημοκρίτειο Πανεπιστήμιο Θράκης",
+            "sameAs": [
+              "https://gkellis.gr/",
+              "https://gkellis.gr/giorgos-kellis-biography",
+              "https://gkellis.gr/contact"
+            ],
+            "worksFor": {
+              "@type": "Organization",
+              "name": "Ελληνικός Στρατός"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Αρχική",
+                "item": "https://gkellis.gr/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Βιογραφικό",
+                "item": "https://gkellis.gr/giorgos-kellis-biography"
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+    <meta property="og:image:type" content="image/jpeg">
+  </x-slot:head>
+
   <section class="hero">
-    <div class="container">
-      <h1>Βιογραφικό</h1>
-      <p>Πορεία ευθύνης, εμπειρίας και προσφοράς στην πατρίδα και στους πολίτες.</p>
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-kicker">Βιογραφικό</div>
+        <h1>Γιώργος Κέλλης</h1>
+        <p>Πορεία ευθύνης, εμπειρίας και προσφοράς στην πατρίδα και στους πολίτες.</p>
+      </div>
+
+      <div class="hero-card">
+        <picture>
+          <source srcset="/images/gkellis.webp" type="image/webp">
+          <img
+            src="/images/gkellis.jpg"
+            alt="Γιώργος Κέλλης"
+            width="597"
+            height="634"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          >
+        </picture>
+      </div>
     </div>
   </section>
 
@@ -31,6 +100,51 @@
         <p>Είμαι παντρεμένος και πατέρας δύο παιδιών. Πιστεύω βαθιά ότι η προσφορά προς την πατρίδα και την κοινωνία δεν είναι μια στιγμή, αλλά <strong>μια διαρκής στάση ζωής</strong>.</p>
       </div>
 
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <h2 class="section-title" style="text-align:center;">Σημεία σταθμοί</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="n">1982</span>
+          <h4>Στρατιωτική Σχολή Ευελπίδων</h4>
+          <p>Εισαγωγή στη Στρατιωτική Σχολή Ευελπίδων.</p>
+        </div>
+
+        <div class="timeline-item">
+          <span class="n">1986</span>
+          <h4>Ανθυπολοχαγός Μηχανικού</h4>
+          <p>Αποφοίτηση και έναρξη στρατιωτικής πορείας.</p>
+        </div>
+
+        <div class="timeline-item">
+          <span class="n">2021</span>
+          <h4>Αντιστράτηγος</h4>
+          <p>Ανάληψη καθηκόντων Υπαρχηγού ΓΕΣ.</p>
+        </div>
+
+        <div class="timeline-item">
+          <span class="n">2023</span>
+          <h4>Υποδιοικητής ΕΥΠ</h4>
+        </div>
+
+        <div class="timeline-item">
+          <span class="n">2024</span>
+          <h4>Συντονιστής Ανασυγκρότησης Έβρου</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta">
+        <h2>Επικοινωνήστε</h2>
+        <p>Για οποιοδήποτε θέμα μπορείτε να επικοινωνήσετε μαζί μου.</p>
+        <a href="/contact" class="btn">Επικοινωνία</a>
+      </div>
     </div>
   </section>
 </x-layouts.campaign>

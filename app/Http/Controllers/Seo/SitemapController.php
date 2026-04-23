@@ -28,12 +28,12 @@ class SitemapController extends Controller
             url('/'),
             route('pages.biography'),
             route('blog.index'),
-            route('media.index'),
             route('contact.index'),
             route('pages.privacy'),
             route('pages.cookies'),
         ])->merge($postUrls)
             ->merge($pageUrls)
+            ->reject(fn (string $url): bool => rtrim($url, '/') === url('/biography'))
             ->unique()
             ->values();
 

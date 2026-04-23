@@ -1,6 +1,19 @@
 @csrf
 <div class="space-y-4 rounded-lg bg-white p-6 shadow">
     <label class="block space-y-1 text-sm text-gray-700">
+        <span>Title</span>
+        <input id="post-title" name="title" value="{{ old('title', $post->title ?? '') }}" placeholder="Title" required class="w-full rounded border-gray-300">
+    </label>
+    <label class="block space-y-1 text-xs text-gray-500">
+        <span>Slug</span>
+        <div class="flex items-center gap-2">
+            <input id="post-slug" name="slug" value="{{ old('slug', $post->slug ?? '') }}" placeholder="slug" readonly class="w-full rounded border-gray-200 bg-gray-50 text-xs text-gray-500">
+            <button type="button" id="unlock-slug-button" class="shrink-0 rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-600">
+                Επεξεργασία
+            </button>
+        </div>
+    </label>
+    <label class="block space-y-1 text-sm text-gray-700">
         <span>Category</span>
         <select name="category_id" class="w-full rounded border-gray-300">
             <option value="">Select existing category</option>
@@ -25,8 +38,6 @@
             <option value="{{ $tagName }}"></option>
         @endforeach
     </datalist>
-    <input id="post-title" name="title" value="{{ old('title', $post->title ?? '') }}" placeholder="Title" required class="w-full rounded border-gray-300">
-    <input id="post-slug" name="slug" value="{{ old('slug', $post->slug ?? '') }}" placeholder="Slug" class="w-full rounded border-gray-300">
     <div class="block space-y-1 text-sm text-gray-700">
         <label for="excerpt-editor"><span>Excerpt</span></label>
         <input id="excerpt-editor" type="hidden" name="excerpt" value="{{ old('excerpt', $post->excerpt ?? '') }}">
@@ -42,7 +53,7 @@
         <span>Publication date</span>
         <input type="datetime-local"
                name="published_at"
-               value="{{ old('published_at', isset($post) && $post->published_at ? $post->published_at->format('Y-m-d\TH:i') : '') }}"
+               value="{{ old('published_at', isset($post) && $post->published_at ? $post->published_at->format('Y-m-d\TH:i') : now()->format('Y-m-d\TH:i')) }}"
                class="w-full rounded border-gray-300">
     </label>
     <label class="block space-y-1 text-sm text-gray-700">
@@ -149,6 +160,7 @@
         const bodyInput = document.getElementById('body-editor');
         const previewButton = document.getElementById('preview-post-button');
         const previewBox = document.getElementById('post-preview');
+        const unlockSlugButton = document.getElementById('unlock-slug-button');
         const metaTitleCounter = document.getElementById('meta-title-counter');
         const metaDescriptionCounter = document.getElementById('meta-description-counter');
         const existingTags = @json(($existingTags ?? collect())->values());
@@ -215,6 +227,20 @@
 
         slugInput?.addEventListener('input', () => {
             slugTouched = slugInput.value.length > 0;
+        });
+
+        unlockSlugButton?.addEventListener('click', () => {
+            if (!slugInput) {
+                return;
+            }
+
+            slugInput.readOnly = false;
+            slugInput.classList.remove('bg-gray-50', 'text-gray-500', 'border-gray-200');
+            slugInput.classList.add('bg-white', 'text-gray-700', 'border-gray-300');
+            slugInput.focus();
+            slugInput.setSelectionRange(slugInput.value.length, slugInput.value.length);
+            slugTouched = true;
+            unlockSlugButton.classList.add('hidden');
         });
 
         metaTitleInput?.addEventListener('input', () => updateCounter(metaTitleInput, metaTitleCounter, 255));

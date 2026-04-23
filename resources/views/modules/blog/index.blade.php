@@ -82,9 +82,11 @@
                 @forelse ($posts as $post)
                     <article class="card blog-post-card">
                         @if ($post->cover_image_path)
-                            <img src="{{ \Illuminate\Support\Facades\Storage::url($post->cover_image_path) }}"
-                                 alt="{{ $post->title }}"
-                                 class="blog-cover-image">
+                            <a href="{{ route('blog.show', $post) }}" aria-label="Δείτε το άρθρο: {{ $post->title }}" style="display:block;">
+                                <img src="{{ \Illuminate\Support\Facades\Storage::url($post->cover_image_path) }}"
+                                     alt="{{ $post->title }}"
+                                     class="blog-cover-image">
+                            </a>
                         @endif
                         <p style="margin:0;color:var(--muted);font-size:.86rem;text-transform:uppercase;letter-spacing:.08em;">
                             {{ optional($post->published_at)->format('d/m/Y') }}
@@ -92,7 +94,7 @@
                         <h3 class="blog-post-title">{{ $post->title }}</h3>
                         <div style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px;">
                             @if ($post->category)
-                                <a href="{{ route('blog.index', ['category' => $post->category->slug]) }}"
+                                <a href="{{ route('blog.category', ['category' => $post->category->slug]) }}"
                                    style="display:inline-block;padding:4px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:.78rem;text-decoration:none;">
                                     {{ $post->category->name }}
                                 </a>
