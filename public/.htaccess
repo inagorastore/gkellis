@@ -5,6 +5,11 @@
 
     RewriteEngine On
 
+    # Force HTTPS and canonical non-www host
+    RewriteCond %{HTTPS} !=on [OR]
+    RewriteCond %{HTTP_HOST} ^www\.gkellis\.gr$ [NC]
+    RewriteRule ^ https://gkellis.gr%{REQUEST_URI} [R=301,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

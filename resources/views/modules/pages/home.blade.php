@@ -39,7 +39,7 @@
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <div class="hero-kicker">Αντιστράτηγος ε.α. - Επίτιμος Υπαρχηγός ΓΕΣ - Πρώην Υποδιοικήτης ΕΥΠ</div>
+        <div class="hero-kicker">Αντιστράτηγος ε.α. - Επίτιμος Υπαρχηγός ΓΕΣ</div>
         <h1>Με σχέδιο,<br/>πειθαρχία και αγάπη</h1>
         <p>Υπηρέτησα την πατρίδα με συνέπεια και καθήκον. Σήμερα συνεχίζω να προσφέρω με ενότητα, ευθύνη και σεβασμό σε κάθε πολίτη.</p>
         <a class="btn" href="{{ route('blog.index') }}" style="padding-inline: 1.75rem;">Άρθρα</a>
