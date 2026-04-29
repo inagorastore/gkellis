@@ -70,7 +70,7 @@
       <div class="timeline">
         <article class="timeline-item"><span class="n">1</span><h4>Υποδιοικητής στην ΕΥΠ</h4><p>Υπηρέτησα από Φεβρουάριο 2023 έως Σεπτέμβριο 2024 σε νευραλγική θέση ευθύνης.</p></article>
         <article class="timeline-item"><span class="n">2</span><h4>Υπαρχηγός ΓΕΣ</h4><p>Από Μάρτιο 2021 έως Ιανουάριο 2023, με απονομή τίτλου Επίτιμου Υπαρχηγού ΓΕΣ.</p></article>
-        <article class="timeline-item"><span class="n">3</span><h4>Επί το έργο</h4><p>Εμπειρία σε διαχείριση κρίσεων και ανασυγκρότηση, με έμφαση στον Έβρο.</p></article>
+        <article class="timeline-item"><span class="n">3</span><h4>Επί τω έργω</h4><p>Εμπειρία σε διαχείριση κρίσεων και ανασυγκρότηση, με έμφαση στον Έβρο.</p></article>
       </div>
     </div>
   </section>
