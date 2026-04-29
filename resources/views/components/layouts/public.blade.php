@@ -13,8 +13,8 @@
     <meta property="fb:app_id" content="937493685856349">
     <meta name="robots" content="index,follow">
     <link rel="canonical" href="{{ url()->current() }}">
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/favicon.svg') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])

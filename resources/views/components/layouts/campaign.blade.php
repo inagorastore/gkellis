@@ -27,8 +27,8 @@
     @if (filled(config('services.recaptcha.site_key')))
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     @endif
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/favicon.svg') }}">
     <style>
         :root{--bg:#0f1738;--bg-soft:#f6f7fb;--text:#1e2442;--muted:#5b638a;--primary:#f6483d;--primary-hover:#e7362a;--white:#fff;--radius:22px;--shadow:0 14px 32px rgba(0,0,0,.08);--max:1200px;}
         *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#fff;line-height:1.6;}
