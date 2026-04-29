@@ -54,8 +54,7 @@
   </section>
 
   <section class="section" style="background:var(--bg-soft);">
-    <div class="container split">
-      <div class="img-wrap"><img src="{{ asset('images/giorgos-kellis-home.png') }}" alt="Γιώργος Κέλλης" width="740" height="370" loading="lazy" decoding="async"></div>
+    <div class="container">
       <div>
         <h2 class="section-title">Γιώργος Κέλλης</h2>
         <p class="section-subtitle">Επίτιμος Υπαρχηγός ΓΕΣ</p>
