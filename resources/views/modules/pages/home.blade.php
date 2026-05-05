@@ -47,7 +47,7 @@
       <div class="hero-card">
         <picture>
           <source srcset="{{ asset('images/gkellis-hero-20260505.webp') }}" type="image/webp">
-          <img src="{{ asset('images/gkellis-hero-20260505.jpg') }}" alt="Γιώργος Κέλλης" width="599" height="900" loading="eager" fetchpriority="high" decoding="async">
+          <img src="{{ asset('images/gkellis-hero-20260505.jpg') }}" alt="Γιώργος Κέλλης" width="638" height="900" loading="eager" fetchpriority="high" decoding="async">
         </picture>
       </div>
     </div>

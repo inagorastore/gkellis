@@ -46,7 +46,7 @@
         .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:36px;min-height:82vh;padding:48px 0}
         .hero-kicker{color:#ff958f;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:700;margin-bottom:12px}
         .hero h1{font-size:clamp(2.1rem,5vw,4.3rem);line-height:1.04;margin:0 0 18px;letter-spacing:-.03em;text-transform:uppercase}
-        .hero p{margin:0 0 24px;color:#d2dcff;max-width:650px}.hero-card{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:26px;padding:18px;box-shadow:var(--shadow)} .hero-card img{border-radius:18px}
+        .hero p{margin:0 0 24px;color:#d2dcff;max-width:650px}.hero-card{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:26px;padding:18px;box-shadow:var(--shadow)} .hero-card picture{display:block;border-radius:18px;overflow:hidden;aspect-ratio:4/5}.hero-card img{border-radius:18px;width:100%;height:100%;object-fit:cover;object-position:center 12%}
         .split{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}.img-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
         .timeline{display:grid;gap:18px;position:relative}.timeline-item{background:#fff;border:1px solid #edf0fb;border-radius:18px;padding:22px;box-shadow:var(--shadow)}
         .timeline-item .n{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;background:#324fb3;color:#fff;font-weight:700;font-size:.9rem;margin-bottom:10px}
@@ -58,7 +58,7 @@
         .card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:30px;border:1px solid #edf0fb}
         .content{color:var(--muted);font-size:1.05rem}.content p{margin:0 0 18px}
         footer{background:#0e1635;color:#d8def8;padding:34px 0;margin-top:70px}.foot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.95rem}
-        @media (max-width: 980px){.hero-grid,.split{grid-template-columns:1fr}.form{grid-template-columns:1fr}.menu{display:none}.menu-toggle{display:inline-flex}}
+        @media (max-width: 980px){.hero-grid,.split{grid-template-columns:1fr}.form{grid-template-columns:1fr}.menu{display:none}.menu-toggle{display:inline-flex}.hero-card{max-width:420px;margin-inline:auto}.hero-card picture{aspect-ratio:3/4}}
     </style>
 </head>
 <body>

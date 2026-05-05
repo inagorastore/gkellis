@@ -67,7 +67,7 @@
           <img
             src="{{ asset('images/gkellis-hero-20260505.jpg') }}"
             alt="Γιώργος Κέλλης"
-            width="599"
+            width="638"
             height="900"
             loading="eager"
             fetchpriority="high"
