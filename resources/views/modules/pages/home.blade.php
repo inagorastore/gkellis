@@ -2,7 +2,7 @@
   meta-title="Γιώργος Κέλλης | Ξάνθη | Επίτιμος Υπαρχηγός ΓΕΣ"
   meta-description="Γνωρίστε τον Γιώργο Κέλλη, Επίτιμο Υπαρχηγό ΓΕΣ, την πορεία προσφοράς του και τις προτάσεις του για την ανάπτυξη της Ξάνθης και της Θράκης."
   og-type="website"
-  meta-image="https://gkellis.gr/images/gkellis-og.jpg?v=20260505"
+  meta-image="https://gkellis.gr/images/gkellis-social-20260505.jpg?v=20260505b"
   meta-image-width="1200"
   meta-image-height="630"
 >
@@ -23,7 +23,7 @@
             "@id": "https://gkellis.gr/#person",
             "name": "Γιώργος Κέλλης",
             "url": "https://gkellis.gr/",
-            "image": "https://gkellis.gr/images/gkellis.jpg",
+            "image": "https://gkellis.gr/images/gkellis-social-20260505.jpg",
             "jobTitle": "Επίτιμος Υπαρχηγός ΓΕΣ",
             "sameAs": [
               "https://gkellis.gr/",
@@ -46,8 +46,8 @@
       </div>
       <div class="hero-card">
         <picture>
-          <source srcset="{{ asset('images/gkellis-hero-new.webp') }}" type="image/webp">
-          <img src="{{ asset('images/gkellis-hero-new.jpg') }}" alt="Γιώργος Κέλλης" width="597" height="634" loading="eager" fetchpriority="high" decoding="async">
+          <source srcset="{{ asset('images/gkellis-hero-20260505.webp') }}" type="image/webp">
+          <img src="{{ asset('images/gkellis-hero-20260505.jpg') }}" alt="Γιώργος Κέλλης" width="599" height="900" loading="eager" fetchpriority="high" decoding="async">
         </picture>
       </div>
     </div>
