@@ -1,7 +1,7 @@
 <x-layouts.campaign
   meta-title="Γιώργος Κέλλης Ξάνθη – Βιογραφικό"
   meta-description="Διαβάστε το βιογραφικό του Γιώργου Κέλλη, την πορεία του στις Ένοπλες Δυνάμεις και τη δημόσια παρουσία του για την ανάπτυξη της Ξάνθης και της Θράκης."
-  meta-image="https://gkellis.gr/images/gkellis-og.jpg"
+  meta-image="https://gkellis.gr/images/gkellis-og.jpg?v=20260505"
   meta-image-width="1200"
   meta-image-height="630"
 >

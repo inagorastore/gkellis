@@ -2,7 +2,7 @@
   meta-title="Γιώργος Κέλλης | Ξάνθη | Επίτιμος Υπαρχηγός ΓΕΣ"
   meta-description="Γνωρίστε τον Γιώργο Κέλλη, Επίτιμο Υπαρχηγό ΓΕΣ, την πορεία προσφοράς του και τις προτάσεις του για την ανάπτυξη της Ξάνθης και της Θράκης."
   og-type="website"
-  meta-image="https://gkellis.gr/images/gkellis-og.jpg"
+  meta-image="https://gkellis.gr/images/gkellis-og.jpg?v=20260505"
   meta-image-width="1200"
   meta-image-height="630"
 >
