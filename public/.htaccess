@@ -5,7 +5,8 @@
 
     RewriteEngine On
 
-    # Force HTTPS and canonical non-www host
+    # Force HTTPS and canonical non-www host only on production domain
+    RewriteCond %{HTTP_HOST} ^(www\.)?gkellis\.gr$ [NC]
     RewriteCond %{HTTPS} !=on [OR]
     RewriteCond %{HTTP_HOST} ^www\.gkellis\.gr$ [NC]
     RewriteRule ^ https://gkellis.gr%{REQUEST_URI} [R=301,L]

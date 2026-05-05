@@ -63,9 +63,9 @@
 
       <div class="hero-card">
         <picture>
-          <source srcset="/images/gkellis.webp" type="image/webp">
+          <source srcset="{{ asset('images/gkellis-hero-new.webp') }}" type="image/webp">
           <img
-            src="/images/gkellis.jpg"
+            src="{{ asset('images/gkellis-hero-new.jpg') }}"
             alt="Γιώργος Κέλλης"
             width="597"
             height="634"
