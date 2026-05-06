@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Modules\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\Post;
+use App\Support\TvInterviews;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,6 +18,7 @@ class PageController extends Controller
     {
         return view('modules.pages.home', [
             'featuredPosts' => Post::published()->latest('published_at')->take(3)->get(),
+            'tvInterviews' => TvInterviews::all(),
         ]);
     }
 

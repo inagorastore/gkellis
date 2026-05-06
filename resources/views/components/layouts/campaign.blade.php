@@ -68,6 +68,7 @@
             <nav class="menu">
                 <a href="{{ route('pages.home') }}">Αρχική</a>
                 <a href="{{ route('pages.biography') }}">Βιογραφικό</a>
+                <a href="{{ route('media.index') }}">Media</a>
                 <a href="{{ route('blog.index') }}">Άρθρα</a>
                 <a href="{{ route('contact.index') }}">Επικοινωνία</a>
             </nav>
@@ -78,6 +79,7 @@
         <nav id="mobile-menu" class="container mobile-menu" aria-label="Κύριο μενού κινητού">
             <a href="{{ route('pages.home') }}">Αρχική</a>
             <a href="{{ route('pages.biography') }}">Βιογραφικό</a>
+            <a href="{{ route('media.index') }}">Media</a>
             <a href="{{ route('blog.index') }}">Άρθρα</a>
             <a href="{{ route('contact.index') }}">Επικοινωνία</a>
         </nav>
