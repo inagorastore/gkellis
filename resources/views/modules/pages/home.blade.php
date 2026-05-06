@@ -111,16 +111,9 @@
           <p class="small" style="margin:0;max-width:640px;">Περιηγηθείτε στα πρόσφατα άρθρα ή δείτε όλο το αρχείο.</p>
           <a class="btn" href="{{ route('blog.index') }}">Δες όλα τα άρθρα</a>
         </div>
-        <div style="display:flex;justify-content:flex-end;gap:10px;margin-bottom:12px;">
-          <button type="button" id="posts-scroll-left" aria-label="Προηγούμενα άρθρα" style="border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:8px 12px;border-radius:10px;cursor:pointer;">&#8592;</button>
-          <button type="button" id="posts-scroll-right" aria-label="Επόμενα άρθρα" style="border:1px solid #cbd5e1;background:#fff;color:#0f172a;padding:8px 12px;border-radius:10px;cursor:pointer;">&#8594;</button>
-        </div>
-        <p id="posts-swipe-hint" class="small" style="display:none;margin:0 0 10px;color:var(--muted);">
-          Σύρε οριζόντια για να δεις περισσότερα άρθρα.
-        </p>
-        <div id="posts-row" style="display:grid;grid-auto-flow:column;grid-auto-columns:minmax(280px, 32%);gap:18px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory;scroll-behavior:smooth;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;">
           @foreach ($featuredPosts as $post)
-            <article class="card" style="display:grid;gap:10px;scroll-snap-align:start;">
+            <article class="card" style="display:grid;gap:10px;">
               <h3 style="margin:0;font-size:1.2rem;line-height:1.35;">
                 <a href="{{ route('blog.show', $post) }}" style="text-decoration:underline;">{{ $post->title }}</a>
               </h3>

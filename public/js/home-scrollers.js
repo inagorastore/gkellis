@@ -72,11 +72,4 @@
         rightButtonId: 'media-scroll-right',
         hintId: 'media-swipe-hint',
     });
-
-    initHorizontalScroller({
-        rowId: 'posts-row',
-        leftButtonId: 'posts-scroll-left',
-        rightButtonId: 'posts-scroll-right',
-        hintId: 'posts-swipe-hint',
-    });
 })();
