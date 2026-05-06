@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
 
         $admin = User::query()->updateOrCreate([
-            'email' => 'admin@general-site.test',
+            'email' => 'in.agora.store@gmail.com',
         ], [
             'name' => 'Site Administrator',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('Fotonio!!$79'),
         ]);
 
         Page::query()->updateOrCreate([
