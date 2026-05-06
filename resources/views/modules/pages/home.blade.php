@@ -6,6 +6,7 @@
   meta-image-width="1200"
   meta-image-height="630"
 >
+  @php($heroImageVersion = '20260506b')
   <x-slot:head>
     <link rel="canonical" href="https://gkellis.gr/">
     <script type="application/ld+json">
@@ -46,8 +47,8 @@
       </div>
       <div class="hero-card">
         <picture>
-          <source srcset="{{ asset('images/gkellis-hero-20260505.webp') }}" type="image/webp">
-          <img src="{{ asset('images/gkellis-hero-20260505.jpg') }}" alt="Γιώργος Κέλλης" width="628" height="900" loading="eager" fetchpriority="high" decoding="async">
+          <source srcset="{{ asset('images/gkellis-hero-20260505.webp') }}?v={{ $heroImageVersion }}" type="image/webp">
+          <img src="{{ asset('images/gkellis-hero-20260505.jpg') }}?v={{ $heroImageVersion }}" alt="Γιώργος Κέλλης" width="628" height="900" loading="eager" fetchpriority="high" decoding="async">
         </picture>
       </div>
     </div>

@@ -9,6 +9,15 @@
                 <a href="{{ route('admin.posts.index') }}" class="inline-block rounded bg-blue-800 px-4 py-2 text-sm text-white">
                     Manage Posts
                 </a>
+                <form method="POST" action="{{ route('admin.database.export') }}" class="ml-2 inline-block">
+                    @csrf
+                    <button
+                        type="submit"
+                        class="inline-block rounded bg-gray-800 px-4 py-2 text-sm text-white hover:bg-gray-900"
+                    >
+                        Download DB Backup (.sql)
+                    </button>
+                </form>
             </div>
             <div class="grid gap-4 md:grid-cols-3">
                 @foreach ($stats as $label => $value)
