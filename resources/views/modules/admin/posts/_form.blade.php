@@ -45,14 +45,24 @@
         <p class="text-xs text-gray-500">Αν το αφήσεις κενό, θα δημιουργηθεί αυτόματα από το body.</p>
     </div>
     <div class="block space-y-1 text-sm text-gray-700">
-        <label for="body-editor"><span>Article body</span></label>
+        <div class="flex flex-wrap items-center justify-between gap-2">
+            <label for="body-editor"><span>Article body</span></label>
+            <button
+                type="button"
+                id="body-image-upload-button"
+                class="rounded border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
+            >
+                + Επισύναψη εικόνας
+            </button>
+        </div>
         <input id="body-editor" type="hidden" name="body" value="{{ old('body', $post->body ?? '') }}">
+        <input id="body-image-file-input" type="file" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden">
         <trix-editor
             input="body-editor"
             class="trix-content rounded border border-gray-300 bg-white min-h-[320px]"
             data-upload-url="{{ route('admin.posts.body-images.store') }}"
         ></trix-editor>
-        <p class="text-xs text-gray-500">Για φωτογραφία μέσα στο κείμενο, χρησιμοποίησε το κουμπί «Επισύναψη αρχείου» (📎) και επίλεξε εικόνα.</p>
+        <p class="text-xs text-gray-500">Πάτα «+ Επισύναψη εικόνας» ή το εικονίδιο 📎 στη γραμμή εργαλείων του editor.</p>
     </div>
     <label class="block space-y-1 text-sm text-gray-700">
         <span>Publication date</span>
