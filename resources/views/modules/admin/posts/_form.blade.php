@@ -47,7 +47,12 @@
     <div class="block space-y-1 text-sm text-gray-700">
         <label for="body-editor"><span>Article body</span></label>
         <input id="body-editor" type="hidden" name="body" value="{{ old('body', $post->body ?? '') }}">
-        <trix-editor input="body-editor" class="trix-content rounded border border-gray-300 bg-white"></trix-editor>
+        <trix-editor
+            input="body-editor"
+            class="trix-content rounded border border-gray-300 bg-white min-h-[320px]"
+            data-upload-url="{{ route('admin.posts.body-images.store') }}"
+        ></trix-editor>
+        <p class="text-xs text-gray-500">Για φωτογραφία μέσα στο κείμενο, χρησιμοποίησε το κουμπί «Επισύναψη αρχείου» (📎) και επίλεξε εικόνα.</p>
     </div>
     <label class="block space-y-1 text-sm text-gray-700">
         <span>Publication date</span>

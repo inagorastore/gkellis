@@ -197,12 +197,53 @@ class AdminPostController extends Controller
         $sanitized = preg_replace('/<(script|style)\b[^>]*>.*?<\/\1>/is', '', $value) ?? '';
         $sanitized = preg_replace('/\s*on\w+\s*=\s*(".*?"|\'.*?\'|[^\s>]+)/i', '', $sanitized) ?? '';
         $sanitized = preg_replace('/\s*(href|src)\s*=\s*([\'"])\s*javascript:[^\'"]*\2/i', '', $sanitized) ?? '';
+        $sanitized = preg_replace('/\s*data-trix-[^=]*=(["\']).*?\1/i', '', $sanitized) ?? '';
         $sanitized = strip_tags(
             $sanitized,
-            '<p><br><strong><b><em><i><u><a><ul><ol><li><blockquote><h1><h2><h3><h4><code><pre>'
+            '<p><br><strong><b><em><i><u><a><ul><ol><li><blockquote><h1><h2><h3><h4><code><pre><img><figure><figcaption>'
         );
 
+        $sanitized = $this->sanitizeRichTextImages($sanitized);
+
         return trim($sanitized);
+    }
+
+    private function sanitizeRichTextImages(string $html): string
+    {
+        $appUrl = rtrim((string) config('app.url'), '/');
+        $allowedPrefix = '/storage/posts/body/';
+
+        return preg_replace_callback(
+            '/<img\b[^>]*\bsrc=(["\'])(.*?)\1[^>]*>/i',
+            function (array $matches) use ($appUrl, $allowedPrefix): string {
+                $src = html_entity_decode($matches[2], ENT_QUOTES | ENT_HTML5);
+
+                if (! $this->isAllowedBodyImageSrc($src, $appUrl, $allowedPrefix)) {
+                    return '';
+                }
+
+                $alt = '';
+                if (preg_match('/\balt=(["\'])(.*?)\1/i', $matches[0], $altMatch)) {
+                    $alt = ' alt="'.e(html_entity_decode($altMatch[2], ENT_QUOTES | ENT_HTML5)).'"';
+                }
+
+                return '<img src="'.e($src).'"'.$alt.' loading="lazy" decoding="async" style="max-width:100%;height:auto;border-radius:12px;">';
+            },
+            $html
+        ) ?? $html;
+    }
+
+    private function isAllowedBodyImageSrc(string $src, string $appUrl, string $allowedPrefix): bool
+    {
+        if (str_starts_with($src, $allowedPrefix)) {
+            return true;
+        }
+
+        if (str_starts_with($src, $appUrl.$allowedPrefix)) {
+            return true;
+        }
+
+        return false;
     }
 
     private function resolveExcerpt(?string $excerpt, string $body): string

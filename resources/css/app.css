@@ -7,3 +7,14 @@
 [x-cloak] {
     display: none !important;
 }
+
+.trix-content img,
+.trix-content figure img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.trix-content figure {
+    margin: 1rem 0;
+}

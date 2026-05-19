@@ -104,9 +104,20 @@
         }
 
         .article-content img,
+        .article-content figure img,
         .article-content iframe,
         .article-content table {
             max-width: 100%;
+            height: auto;
+        }
+
+        .article-content figure {
+            margin: 0 0 20px;
+        }
+
+        .article-content figure img {
+            display: block;
+            border-radius: 12px;
         }
 
         .article-back {
