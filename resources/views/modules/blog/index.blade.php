@@ -37,6 +37,97 @@
             max-width: 100%;
         }
 
+        .campaign-pagination {
+            display: grid;
+            gap: 12px;
+        }
+
+        .campaign-pagination__summary {
+            margin: 0;
+            color: var(--muted);
+            font-size: .92rem;
+        }
+
+        .campaign-pagination__controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .campaign-pagination__btn,
+        .campaign-pagination__page {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 8px 14px;
+            border: 1px solid #d9e1f5;
+            border-radius: 10px;
+            background: #fff;
+            color: var(--text);
+            font-size: .92rem;
+            font-weight: 600;
+            line-height: 1.2;
+            text-decoration: none;
+            transition: .2s;
+        }
+
+        .campaign-pagination__btn:hover,
+        .campaign-pagination__page:hover {
+            border-color: #8ca3e9;
+            background: #f5f7ff;
+        }
+
+        .campaign-pagination__btn.is-disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .campaign-pagination__pages {
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .campaign-pagination__page {
+            min-width: 40px;
+            padding-inline: 12px;
+        }
+
+        .campaign-pagination__page.is-active {
+            border-color: #324fb3;
+            background: #324fb3;
+            color: #fff;
+        }
+
+        .campaign-pagination__dots {
+            padding: 0 4px;
+            color: var(--muted);
+            font-size: .92rem;
+        }
+
+        @media (max-width: 640px) {
+            .campaign-pagination__controls {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .campaign-pagination__pages {
+                grid-column: 1 / -1;
+                order: -1;
+            }
+
+            .campaign-pagination__btn {
+                width: 100%;
+            }
+        }
+
         @media (max-width: 980px) {
             .blog-grid {
                 grid-template-columns: 1fr;
@@ -117,7 +208,7 @@
             </div>
 
             <div style="margin-top:22px;">
-                {{ $posts->links() }}
+                {{ $posts->links('vendor.pagination.campaign') }}
             </div>
         </div>
     </section>
