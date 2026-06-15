@@ -63,9 +63,9 @@
 
       <div class="hero-card">
         <picture>
-          <source srcset="{{ asset('images/gkellis-hero-20260505.webp') }}?v=20260506c" type="image/webp">
+          <source srcset="{{ asset('images/gkellis-hero-20260505.webp') }}?v=20260615a" type="image/webp">
           <img
-            src="{{ asset('images/gkellis-hero-20260505.jpg') }}?v=20260506c"
+            src="{{ asset('images/gkellis-hero-20260505.jpg') }}?v=20260615a"
             alt="Γιώργος Κέλλης"
             width="628"
             height="900"

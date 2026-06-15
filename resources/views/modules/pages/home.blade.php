@@ -6,7 +6,7 @@
   meta-image-width="1200"
   meta-image-height="630"
 >
-  @php($heroImageVersion = '20260506c')
+  @php($heroImageVersion = '20260615a')
   <x-slot:head>
     <link rel="canonical" href="https://gkellis.gr/">
     <script type="application/ld+json">
