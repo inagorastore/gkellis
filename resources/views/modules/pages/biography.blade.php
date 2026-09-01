@@ -1,7 +1,7 @@
 <x-layouts.campaign
   meta-title="Γιώργος Κέλλης Ξάνθη – Βιογραφικό"
   meta-description="Διαβάστε το βιογραφικό του Γιώργου Κέλλη, την πορεία του στις Ένοπλες Δυνάμεις και τη δημόσια παρουσία του για την ανάπτυξη της Ξάνθης και της Θράκης."
-  meta-image="https://gkellis.gr/images/gkellis-social-20260505.jpg?v=20260506c"
+  meta-image="https://gkellis.gr/images/gkellis-social-20260505.jpg?v=20260901a"
   meta-image-width="1200"
   meta-image-height="630"
 >
@@ -16,7 +16,7 @@
             "@id": "https://gkellis.gr/#person",
             "name": "Γιώργος Κέλλης",
             "url": "https://gkellis.gr",
-            "image": "https://gkellis.gr/images/gkellis-social-20260505.jpg",
+            "image": "https://gkellis.gr/images/gkellis-social-20260505.jpg?v=20260901a",
             "jobTitle": "Επίτιμος Υπαρχηγός ΓΕΣ",
             "birthPlace": "Ξάνθη",
             "alumniOf": "Δημοκρίτειο Πανεπιστήμιο Θράκης",
@@ -63,9 +63,9 @@
 
       <div class="hero-card">
         <picture>
-          <source srcset="{{ asset('images/gkellis-hero-20260505.webp') }}?v=20260615a" type="image/webp">
+          <source srcset="{{ asset('images/gkellis-hero-20260505.webp') }}?v=20260901a" type="image/webp">
           <img
-            src="{{ asset('images/gkellis-hero-20260505.jpg') }}?v=20260615a"
+            src="{{ asset('images/gkellis-hero-20260505.jpg') }}?v=20260901a"
             alt="Γιώργος Κέλλης"
             width="628"
             height="900"
