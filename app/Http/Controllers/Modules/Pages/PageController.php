@@ -22,6 +22,14 @@ class PageController extends Controller
         ]);
     }
 
+    public function homePreview(): View
+    {
+        return view('modules.pages.home-preview', [
+            'featuredPosts' => Post::published()->latest('published_at')->take(3)->get(),
+            'tvInterviews' => array_slice(TvInterviews::all(), 0, 4),
+        ]);
+    }
+
     public function biography(): View
     {
         $biographyPage = Page::published()->where('slug', 'biography')->first();
