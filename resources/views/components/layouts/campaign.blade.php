@@ -67,9 +67,9 @@
             <a class="logo" href="{{ route('pages.home') }}">Γιώργος Κέλλης</a>
             <nav class="menu">
                 <a href="{{ route('pages.home') }}">Αρχική</a>
-                <a href="{{ route('pages.biography') }}">Βιογραφικό</a>
+                <a href="{{ route('pages.biography') }}">Ποιος είμαι</a>
                 <a href="{{ route('media.index') }}">Media</a>
-                <a href="{{ route('blog.index') }}">Άρθρα</a>
+                <a href="{{ route('blog.index') }}">Παρεμβάσεις</a>
                 <a href="{{ route('contact.index') }}">Επικοινωνία</a>
             </nav>
             <button class="menu-toggle" type="button" aria-label="Άνοιγμα μενού" aria-expanded="false" aria-controls="mobile-menu">
@@ -78,9 +78,9 @@
         </div>
         <nav id="mobile-menu" class="container mobile-menu" aria-label="Κύριο μενού κινητού">
             <a href="{{ route('pages.home') }}">Αρχική</a>
-            <a href="{{ route('pages.biography') }}">Βιογραφικό</a>
+            <a href="{{ route('pages.biography') }}">Ποιος είμαι</a>
             <a href="{{ route('media.index') }}">Media</a>
-            <a href="{{ route('blog.index') }}">Άρθρα</a>
+            <a href="{{ route('blog.index') }}">Παρεμβάσεις</a>
             <a href="{{ route('contact.index') }}">Επικοινωνία</a>
         </nav>
     </header>
