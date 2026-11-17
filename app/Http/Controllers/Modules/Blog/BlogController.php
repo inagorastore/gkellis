@@ -47,6 +47,32 @@ class BlogController extends Controller
         abort_unless($post->is_published, 404);
         $post->loadMissing(['category', 'tags']);
 
-        return view('modules.blog.show', compact('post'));
+        $previousPost = Post::query()
+            ->published()
+            ->where(function ($query) use ($post) {
+                $query->where('published_at', '<', $post->published_at)
+                    ->orWhere(function ($sameDate) use ($post) {
+                        $sameDate->where('published_at', $post->published_at)
+                            ->where('id', '<', $post->id);
+                    });
+            })
+            ->orderByDesc('published_at')
+            ->orderByDesc('id')
+            ->first();
+
+        $nextPost = Post::query()
+            ->published()
+            ->where(function ($query) use ($post) {
+                $query->where('published_at', '>', $post->published_at)
+                    ->orWhere(function ($sameDate) use ($post) {
+                        $sameDate->where('published_at', $post->published_at)
+                            ->where('id', '>', $post->id);
+                    });
+            })
+            ->orderBy('published_at')
+            ->orderBy('id')
+            ->first();
+
+        return view('modules.blog.show', compact('post', 'previousPost', 'nextPost'));
     }
 }

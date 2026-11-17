@@ -116,10 +116,127 @@
             margin-top: 20px;
         }
 
+        .article-nav {
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid #edf0fb;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .article-nav-link {
+            display: grid;
+            grid-template-columns: 88px 1fr;
+            gap: 12px;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            padding: 10px;
+            border: 1px solid #edf0fb;
+            border-radius: 16px;
+            background: #f8f9fd;
+            transition: border-color .2s, box-shadow .2s, transform .2s;
+            min-height: 100%;
+        }
+
+        .article-nav-link:hover {
+            border-color: #c9d4f5;
+            box-shadow: 0 10px 24px rgba(29, 47, 114, .08);
+            transform: translateY(-1px);
+        }
+
+        .article-nav-link.is-next {
+            grid-template-columns: 1fr 88px;
+            text-align: right;
+        }
+
+        .article-nav-link.is-next .article-nav-copy {
+            order: 1;
+        }
+
+        .article-nav-link.is-next .article-nav-thumb {
+            order: 2;
+        }
+
+        .article-nav-thumb {
+            width: 88px;
+            height: 66px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(120deg, #0d1533 0%, #324fb3 100%);
+            flex-shrink: 0;
+        }
+
+        .article-nav-thumb img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .article-nav-label {
+            display: block;
+            margin: 0 0 4px;
+            color: #7b849f;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .article-nav-title {
+            margin: 0;
+            color: #1e2442;
+            font-size: .95rem;
+            font-weight: 700;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-nav.is-single {
+            grid-template-columns: 1fr;
+        }
+
+        .article-nav.is-single .article-nav-link.is-next {
+            grid-template-columns: 88px 1fr;
+            text-align: left;
+        }
+
+        .article-nav.is-single .article-nav-link.is-next .article-nav-thumb {
+            order: 1;
+        }
+
+        .article-nav.is-single .article-nav-link.is-next .article-nav-copy {
+            order: 2;
+        }
+
         @media (max-width: 980px) {
             .article-card {
                 padding: 20px;
                 border-radius: 16px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .article-nav {
+                grid-template-columns: 1fr;
+            }
+
+            .article-nav-link.is-next {
+                grid-template-columns: 88px 1fr;
+                text-align: left;
+            }
+
+            .article-nav-link.is-next .article-nav-thumb {
+                order: 1;
+            }
+
+            .article-nav-link.is-next .article-nav-copy {
+                order: 2;
             }
         }
     </style>
@@ -158,6 +275,45 @@
                 <div class="article-content">
                     {!! $post->body !!}
                 </div>
+
+                @if ($previousPost || $nextPost)
+                    <nav class="article-nav {{ ($previousPost && $nextPost) ? '' : 'is-single' }}" aria-label="Πλοήγηση άρθρων">
+                        @if ($previousPost)
+                            <a href="{{ route('blog.show', $previousPost) }}" class="article-nav-link is-prev" rel="prev">
+                                <span class="article-nav-thumb" aria-hidden="true">
+                                    <img
+                                        src="{{ $previousPost->resolveSocialImageUrl(false) }}"
+                                        alt=""
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+                                </span>
+                                <span class="article-nav-copy">
+                                    <span class="article-nav-label">← Προηγούμενο</span>
+                                    <span class="article-nav-title">{{ $previousPost->title }}</span>
+                                </span>
+                            </a>
+                        @endif
+
+                        @if ($nextPost)
+                            <a href="{{ route('blog.show', $nextPost) }}" class="article-nav-link is-next" rel="next">
+                                <span class="article-nav-copy">
+                                    <span class="article-nav-label">Επόμενο →</span>
+                                    <span class="article-nav-title">{{ $nextPost->title }}</span>
+                                </span>
+                                <span class="article-nav-thumb" aria-hidden="true">
+                                    <img
+                                        src="{{ $nextPost->resolveSocialImageUrl(false) }}"
+                                        alt=""
+                                        loading="lazy"
+                                        decoding="async"
+                                    >
+                                </span>
+                            </a>
+                        @endif
+                    </nav>
+                @endif
+
                 <div class="article-back">
                     <a href="{{ route('blog.index') }}" class="btn">Επιστροφή στα άρθρα</a>
                 </div>
