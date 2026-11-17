@@ -111,4 +111,59 @@ class PostFacebookPublishTest extends TestCase
 
         $this->assertStringContainsString('gkellis-facebook-fallback.jpg', $url);
     }
+
+    public function test_update_keeps_uploaded_og_image_when_url_field_is_blank(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::query()->create([
+            'user_id' => $user->id,
+            'title' => 'Άρθρο με OG upload',
+            'slug' => 'arthro-me-og-upload',
+            'excerpt' => '<p>Excerpt</p>',
+            'body' => '<p>Body</p>',
+            'og_image' => 'posts/og/existing-og.jpg',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        $this->actingAs($user)->put(route('admin.posts.update', $post), [
+            'title' => $post->title,
+            'slug' => $post->slug,
+            'excerpt' => $post->excerpt,
+            'body' => $post->body,
+            'og_image' => '',
+            'is_published' => '1',
+            'published_at' => $post->published_at?->format('Y-m-d H:i:s'),
+        ])->assertRedirect(route('admin.posts.index'));
+
+        $this->assertSame('posts/og/existing-og.jpg', $post->fresh()->og_image);
+    }
+
+    public function test_update_rejects_non_url_og_image_text(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::query()->create([
+            'user_id' => $user->id,
+            'title' => 'Άρθρο OG',
+            'slug' => 'arthro-og',
+            'excerpt' => '<p>Excerpt</p>',
+            'body' => '<p>Body</p>',
+            'og_image' => 'posts/og/existing-og.jpg',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        $this->actingAs($user)->from(route('admin.posts.edit', $post))->put(route('admin.posts.update', $post), [
+            'title' => $post->title,
+            'slug' => $post->slug,
+            'excerpt' => $post->excerpt,
+            'body' => $post->body,
+            'og_image' => 'posts/og/not-a-full-url.jpg',
+            'is_published' => '1',
+            'published_at' => $post->published_at?->format('Y-m-d H:i:s'),
+        ])->assertRedirect(route('admin.posts.edit', $post))
+            ->assertSessionHasErrors('og_image');
+
+        $this->assertSame('posts/og/existing-og.jpg', $post->fresh()->og_image);
+    }
 }

@@ -92,6 +92,19 @@ class AdminPostController extends Controller
 
         if ($request->hasFile('og_image_upload')) {
             $validated['og_image'] = $request->file('og_image_upload')->store('posts/og', 'public');
+        } elseif (filled($validated['og_image'] ?? null)) {
+            $submittedOgImage = trim((string) $validated['og_image']);
+            if (
+                ! str_starts_with($submittedOgImage, 'http://')
+                && ! str_starts_with($submittedOgImage, 'https://')
+            ) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['og_image' => 'Το Open Graph image πρέπει να είναι πλήρες URL (https://...).']);
+            }
+            $validated['og_image'] = $submittedOgImage;
+        } else {
+            unset($validated['og_image']);
         }
 
         $post = Post::create($validated);
@@ -181,24 +194,28 @@ class AdminPostController extends Controller
         if ($request->hasFile('og_image_upload')) {
             $this->deleteStoredOgImage($post->og_image);
             $validated['og_image'] = $request->file('og_image_upload')->store('posts/og', 'public');
-        } elseif ((bool) ($request->boolean('remove_og_image'))) {
+        } elseif ($request->boolean('remove_og_image')) {
             $this->deleteStoredOgImage($post->og_image);
             $validated['og_image'] = null;
-        } elseif (array_key_exists('og_image', $validated) && $validated['og_image'] !== $post->og_image) {
-            $this->deleteStoredOgImage($post->og_image);
-        }
+        } else {
+            $submittedOgImage = trim((string) ($validated['og_image'] ?? ''));
 
-        // Avoid wiping a stored relative OG path when the URL field is empty/invalid on edit.
-        if (
-            array_key_exists('og_image', $validated)
-            && blank($validated['og_image'])
-            && ! $request->hasFile('og_image_upload')
-            && ! $request->boolean('remove_og_image')
-            && filled($post->og_image)
-            && ! str_starts_with((string) $post->og_image, 'http://')
-            && ! str_starts_with((string) $post->og_image, 'https://')
-        ) {
-            unset($validated['og_image']);
+            if ($submittedOgImage === '') {
+                // Keep existing uploaded/storage path when the URL field is left blank.
+                unset($validated['og_image']);
+            } elseif ($submittedOgImage !== (string) $post->og_image) {
+                if (
+                    ! str_starts_with($submittedOgImage, 'http://')
+                    && ! str_starts_with($submittedOgImage, 'https://')
+                ) {
+                    return back()
+                        ->withInput()
+                        ->withErrors(['og_image' => 'Το Open Graph image πρέπει να είναι πλήρες URL (https://...).']);
+                }
+
+                $this->deleteStoredOgImage($post->og_image);
+                $validated['og_image'] = $submittedOgImage;
+            }
         }
 
         $post->update($validated);

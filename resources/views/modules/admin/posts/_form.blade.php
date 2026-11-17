@@ -93,17 +93,28 @@
         <input id="meta-description" name="meta_description" value="{{ old('meta_description', $post->meta_description ?? '') }}" placeholder="Meta description" class="w-full rounded border-gray-300">
         <p id="meta-description-counter" class="text-xs text-gray-500">0/160</p>
     </label>
+    @php
+        $existingOgImage = old('og_image', $post->og_image ?? '');
+        $ogImageIsExternalUrl = is_string($existingOgImage)
+            && (str_starts_with($existingOgImage, 'http://') || str_starts_with($existingOgImage, 'https://'));
+        $ogImageFieldValue = $ogImageIsExternalUrl ? $existingOgImage : '';
+    @endphp
     <label class="block space-y-1 text-sm text-gray-700">
-        <span>Open Graph image (Facebook)</span>
+        <span>Open Graph image URL (Facebook)</span>
         <input
             id="og-image"
             name="og_image"
-            type="url"
-            value="{{ old('og_image', $post->og_image ?? '') }}"
+            type="text"
+            inputmode="url"
+            value="{{ $ogImageFieldValue }}"
             placeholder="https://example.com/path/to/image.jpg"
             class="w-full rounded border-gray-300"
         >
-        <p class="text-xs text-gray-500">Προαιρετικό URL. Αν ανέβει αρχείο παρακάτω, θα έχει προτεραιότητα.</p>
+        <p class="text-xs text-gray-500">
+            Προαιρετικό εξωτερικό URL.
+            Αν υπάρχει ανεβασμένο αρχείο παρακάτω, άφησε αυτό το πεδίο κενό — δεν χρειάζεται να το γεμίσεις.
+            Νέο upload έχει προτεραιότητα.
+        </p>
     </label>
     <label class="block space-y-1 text-sm text-gray-700">
         <span>Open Graph image upload (Facebook)</span>
