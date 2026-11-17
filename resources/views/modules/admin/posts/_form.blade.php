@@ -193,14 +193,15 @@
             </p>
             <div class="mt-3 flex flex-wrap items-center gap-2">
                 @if ($post->facebookShareUrl())
-                    <a href="{{ $post->facebookShareUrl() }}" target="_blank" rel="noopener" class="inline-block rounded border border-green-300 bg-white px-3 py-1.5 text-xs font-medium text-green-900">
+                    <a href="{{ $post->facebookShareUrl() }}" target="_blank" rel="noopener" class="inline-flex items-center rounded border border-green-300 bg-white px-3 py-2 text-xs font-semibold text-green-900">
                         Άνοιγμα δημοσίευσης
                     </a>
                 @endif
                 <button
                     type="submit"
                     form="republish-facebook-form"
-                    class="rounded bg-[#1877f2] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#0f66d8] disabled:cursor-not-allowed disabled:opacity-50"
+                    class="inline-flex items-center rounded border border-blue-700 bg-blue-600 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    style="background-color:#1877f2;border-color:#0f66d8;color:#fff;"
                     @disabled(! $facebookConfigured)
                     onclick="return confirm('Θα δημιουργηθεί ΝΕΑ ανάρτηση στο Facebook με το τρέχον link preview. Η παλιά δεν διαγράφεται αυτόματα. Συνέχεια;')"
                 >

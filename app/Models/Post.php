@@ -86,6 +86,57 @@ class Post extends Model
         return $absolute ? asset($fallback) : '/'.ltrim($fallback, '/');
     }
 
+    /**
+     * @return array{width: int, height: int}
+     */
+    public function resolveSocialImageDimensions(): array
+    {
+        $localPath = $this->resolveSocialImageLocalPath();
+
+        if ($localPath !== null) {
+            $size = @getimagesize($localPath);
+
+            if (is_array($size) && ($size[0] ?? 0) > 0 && ($size[1] ?? 0) > 0) {
+                return [
+                    'width' => (int) $size[0],
+                    'height' => (int) $size[1],
+                ];
+            }
+        }
+
+        return [
+            'width' => 1200,
+            'height' => 630,
+        ];
+    }
+
+    private function resolveSocialImageLocalPath(): ?string
+    {
+        if (filled($this->og_image)) {
+            return $this->localPathForMediaValue((string) $this->og_image);
+        }
+
+        if (filled($this->cover_image_path)) {
+            return $this->localPathForMediaValue((string) $this->cover_image_path);
+        }
+
+        $fallback = (string) config('services.facebook.fallback_image', 'images/gkellis-facebook-fallback.jpg');
+        $publicPath = public_path(ltrim($fallback, '/'));
+
+        return is_file($publicPath) ? $publicPath : null;
+    }
+
+    private function localPathForMediaValue(string $value): ?string
+    {
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return null;
+        }
+
+        $storagePath = Storage::disk('public')->path($value);
+
+        return is_file($storagePath) ? $storagePath : null;
+    }
+
     private function normalizeMediaUrl(string $value, bool $absolute): string
     {
         if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {

@@ -12,12 +12,9 @@
     <meta property="fb:app_id" content="937493685856349" />
     @if (!empty($metaImage))
         <meta property="og:image" content="{{ $metaImage }}" />
-        @if (!empty($metaImageWidth))
-            <meta property="og:image:width" content="{{ $metaImageWidth }}" />
-        @endif
-        @if (!empty($metaImageHeight))
-            <meta property="og:image:height" content="{{ $metaImageHeight }}" />
-        @endif
+        <meta property="og:image:width" content="{{ $metaImageWidth ?? 1200 }}" />
+        <meta property="og:image:height" content="{{ $metaImageHeight ?? 630 }}" />
+        <meta property="og:image:type" content="image/jpeg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="{{ $metaImage }}" />
     @endif

@@ -1,11 +1,14 @@
 @php
     $metaImage = $post->resolveSocialImageUrl();
+    $metaImageDimensions = $post->resolveSocialImageDimensions();
 @endphp
 
 <x-layouts.campaign
     :meta-title="$post->meta_title ?: $post->title"
     :meta-description="$post->meta_description ?: strip_tags($post->excerpt)"
     :meta-image="$metaImage"
+    :meta-image-width="$metaImageDimensions['width']"
+    :meta-image-height="$metaImageDimensions['height']"
 >
     <style>
         .article-hero {

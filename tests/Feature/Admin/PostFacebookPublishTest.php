@@ -153,6 +153,22 @@ class PostFacebookPublishTest extends TestCase
         $this->assertStringContainsString('gkellis-facebook-fallback.jpg', $url);
     }
 
+    public function test_post_social_image_dimensions_default_to_facebook_ratio(): void
+    {
+        $post = new Post([
+            'title' => 'Χωρίς τοπική εικόνα',
+            'slug' => 'xoris-topiki-eikona',
+            'excerpt' => '<p>Excerpt</p>',
+            'body' => '<p>Body</p>',
+            'og_image' => 'https://example.com/remote-og.jpg',
+        ]);
+
+        $this->assertSame([
+            'width' => 1200,
+            'height' => 630,
+        ], $post->resolveSocialImageDimensions());
+    }
+
     public function test_update_keeps_uploaded_og_image_when_url_field_is_blank(): void
     {
         $user = User::factory()->create();
