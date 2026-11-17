@@ -10,6 +10,7 @@
                             <th class="px-4 py-3">Title</th>
                             <th class="px-4 py-3">Published At</th>
                             <th class="px-4 py-3">Status</th>
+                            <th class="px-4 py-3">Facebook</th>
                             <th class="px-4 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
@@ -21,6 +22,13 @@
                                 {{ $post->published_at ? $post->published_at->format('d/m/Y H:i') : '—' }}
                             </td>
                             <td class="px-4 py-3">{{ $post->is_published ? 'Published' : 'Draft' }}</td>
+                            <td class="px-4 py-3">
+                                @if ($post->hasBeenPublishedToFacebook())
+                                    <span class="text-green-700">Published</span>
+                                @else
+                                    <span class="text-gray-400">—</span>
+                                @endif
+                            </td>
                             <td class="px-4 py-3 text-right"><a href="{{ route('admin.posts.edit', $post) }}" class="text-blue-700">Edit</a></td>
                         </tr>
                     @endforeach

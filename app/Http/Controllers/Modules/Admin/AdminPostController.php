@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Services\FacebookPagePublisher;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use RuntimeException;
+use Throwable;
 
 class AdminPostController extends Controller
 {
@@ -33,6 +36,7 @@ class AdminPostController extends Controller
     public function create(): View
     {
         return view('modules.admin.posts.create', [
+            'post' => new Post(),
             'categories' => Category::query()->orderBy('name')->get(),
             'existingTags' => Tag::query()->orderBy('name')->pluck('name'),
         ]);
@@ -53,12 +57,13 @@ class AdminPostController extends Controller
             'body' => ['required', 'string'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:160'],
-            'og_image' => ['nullable', 'url', 'max:2048'],
+            'og_image' => ['nullable', 'string', 'max:2048'],
             'og_image_upload' => ['nullable', 'image', 'max:4096'],
             'remove_og_image' => ['nullable', 'boolean'],
             'published_at' => ['nullable', 'date'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
             'is_published' => ['nullable', 'boolean'],
+            'publish_to_facebook' => ['nullable', 'boolean'],
         ]);
 
         $validated['slug'] = $this->resolveSlug($validated['slug'] ?? null, $validated['title']);
@@ -78,6 +83,8 @@ class AdminPostController extends Controller
             $validated['meta_description'] ?? null,
             $validated['body']
         );
+        $publishToFacebook = (bool) ($validated['publish_to_facebook'] ?? false);
+        unset($validated['publish_to_facebook'], $validated['category_name'], $validated['tags'], $validated['og_image_upload'], $validated['remove_og_image'], $validated['cover_image']);
 
         if ($request->hasFile('cover_image')) {
             $validated['cover_image_path'] = $request->file('cover_image')->store('posts/covers', 'public');
@@ -88,9 +95,15 @@ class AdminPostController extends Controller
         }
 
         $post = Post::create($validated);
-        $post->tags()->sync($this->resolveTagIds($validated['tags'] ?? null));
+        $post->tags()->sync($this->resolveTagIds($request->input('tags')));
 
-        return redirect()->route('admin.posts.index')->with('status', 'Post created.');
+        $status = 'Post created.';
+        $facebookStatus = $this->maybePublishToFacebook($post, $publishToFacebook, app(FacebookPagePublisher::class));
+        if ($facebookStatus !== null) {
+            $status .= ' '.$facebookStatus;
+        }
+
+        return redirect()->route('admin.posts.index')->with('status', $status);
     }
 
     /**
@@ -128,12 +141,13 @@ class AdminPostController extends Controller
             'body' => ['required', 'string'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:160'],
-            'og_image' => ['nullable', 'url', 'max:2048'],
+            'og_image' => ['nullable', 'string', 'max:2048'],
             'og_image_upload' => ['nullable', 'image', 'max:4096'],
             'remove_og_image' => ['nullable', 'boolean'],
             'published_at' => ['nullable', 'date'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
             'is_published' => ['nullable', 'boolean'],
+            'publish_to_facebook' => ['nullable', 'boolean'],
         ]);
 
         $validated['slug'] = $this->resolveSlug($validated['slug'] ?? null, $validated['title']);
@@ -152,6 +166,9 @@ class AdminPostController extends Controller
             $validated['meta_description'] ?? null,
             $validated['body']
         );
+        $publishToFacebook = (bool) ($validated['publish_to_facebook'] ?? false);
+        $tagsInput = $validated['tags'] ?? null;
+        unset($validated['publish_to_facebook'], $validated['category_name'], $validated['tags'], $validated['og_image_upload'], $validated['remove_og_image'], $validated['cover_image']);
 
         if ($request->hasFile('cover_image')) {
             if (! empty($post->cover_image_path)) {
@@ -164,17 +181,37 @@ class AdminPostController extends Controller
         if ($request->hasFile('og_image_upload')) {
             $this->deleteStoredOgImage($post->og_image);
             $validated['og_image'] = $request->file('og_image_upload')->store('posts/og', 'public');
-        } elseif ((bool) ($validated['remove_og_image'] ?? false)) {
+        } elseif ((bool) ($request->boolean('remove_og_image'))) {
             $this->deleteStoredOgImage($post->og_image);
             $validated['og_image'] = null;
         } elseif (array_key_exists('og_image', $validated) && $validated['og_image'] !== $post->og_image) {
             $this->deleteStoredOgImage($post->og_image);
         }
 
-        $post->update($validated);
-        $post->tags()->sync($this->resolveTagIds($validated['tags'] ?? null));
+        // Avoid wiping a stored relative OG path when the URL field is empty/invalid on edit.
+        if (
+            array_key_exists('og_image', $validated)
+            && blank($validated['og_image'])
+            && ! $request->hasFile('og_image_upload')
+            && ! $request->boolean('remove_og_image')
+            && filled($post->og_image)
+            && ! str_starts_with((string) $post->og_image, 'http://')
+            && ! str_starts_with((string) $post->og_image, 'https://')
+        ) {
+            unset($validated['og_image']);
+        }
 
-        return redirect()->route('admin.posts.index')->with('status', 'Post updated.');
+        $post->update($validated);
+        $post->tags()->sync($this->resolveTagIds($tagsInput));
+        $post->refresh();
+
+        $status = 'Post updated.';
+        $facebookStatus = $this->maybePublishToFacebook($post, $publishToFacebook, app(FacebookPagePublisher::class));
+        if ($facebookStatus !== null) {
+            $status .= ' '.$facebookStatus;
+        }
+
+        return redirect()->route('admin.posts.index')->with('status', $status);
     }
 
     /**
@@ -372,5 +409,24 @@ class AdminPostController extends Controller
         }
 
         Storage::disk('public')->delete($value);
+    }
+
+    private function maybePublishToFacebook(Post $post, bool $publishToFacebook, FacebookPagePublisher $publisher): ?string
+    {
+        if (! $publishToFacebook) {
+            return null;
+        }
+
+        try {
+            $facebookPostId = $publisher->publish($post);
+
+            return 'Δημοσιεύτηκε και στο Facebook (ID: '.$facebookPostId.').';
+        } catch (RuntimeException $exception) {
+            return 'Facebook: '.$exception->getMessage();
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return 'Facebook: απροσδόκητο σφάλμα κατά τη δημοσίευση.';
+        }
     }
 }

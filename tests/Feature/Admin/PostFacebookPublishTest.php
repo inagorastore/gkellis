@@ -1,0 +1,114 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Admin;
+
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
+use Tests\TestCase;
+
+class PostFacebookPublishTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_admin_can_publish_existing_post_to_facebook(): void
+    {
+        config([
+            'services.facebook.page_id' => '123456789',
+            'services.facebook.page_access_token' => 'test-token',
+            'services.facebook.graph_version' => 'v25.0',
+        ]);
+
+        Http::fake([
+            'graph.facebook.com/*' => Http::response(['id' => '123456789_987654321'], 200),
+        ]);
+
+        $user = User::factory()->create();
+        $post = Post::query()->create([
+            'user_id' => $user->id,
+            'title' => 'Δοκιμαστικό άρθρο',
+            'slug' => 'dokimastiko-arthro',
+            'excerpt' => '<p>Σύντομη περιγραφή</p>',
+            'body' => '<p>Περιεχόμενο άρθρου</p>',
+            'is_published' => true,
+            'published_at' => now()->subDays(3),
+        ]);
+
+        $response = $this->actingAs($user)->put(route('admin.posts.update', $post), [
+            'title' => $post->title,
+            'slug' => $post->slug,
+            'excerpt' => $post->excerpt,
+            'body' => $post->body,
+            'is_published' => '1',
+            'published_at' => $post->published_at?->format('Y-m-d H:i:s'),
+            'publish_to_facebook' => '1',
+        ]);
+
+        $response->assertRedirect(route('admin.posts.index'));
+
+        $post->refresh();
+
+        $this->assertSame('123456789_987654321', $post->facebook_post_id);
+        $this->assertNotNull($post->facebook_published_at);
+
+        Http::assertSent(function ($request): bool {
+            return str_contains($request->url(), 'graph.facebook.com/v25.0/123456789/feed')
+                && $request['message'] !== null
+                && $request['link'] !== null
+                && $request['access_token'] === 'test-token';
+        });
+    }
+
+    public function test_facebook_checkbox_is_ignored_when_already_published(): void
+    {
+        config([
+            'services.facebook.page_id' => '123456789',
+            'services.facebook.page_access_token' => 'test-token',
+        ]);
+
+        Http::fake();
+
+        $user = User::factory()->create();
+        $post = Post::query()->create([
+            'user_id' => $user->id,
+            'title' => 'Ήδη στο Facebook',
+            'slug' => 'idi-sto-facebook',
+            'excerpt' => '<p>Excerpt</p>',
+            'body' => '<p>Body</p>',
+            'is_published' => true,
+            'published_at' => now(),
+            'facebook_post_id' => '111_222',
+            'facebook_published_at' => now()->subDay(),
+        ]);
+
+        $this->actingAs($user)->put(route('admin.posts.update', $post), [
+            'title' => $post->title,
+            'slug' => $post->slug,
+            'excerpt' => $post->excerpt,
+            'body' => $post->body,
+            'is_published' => '1',
+            'published_at' => $post->published_at?->format('Y-m-d H:i:s'),
+            'publish_to_facebook' => '1',
+        ])->assertRedirect(route('admin.posts.index'));
+
+        Http::assertNothingSent();
+        $this->assertSame('111_222', $post->fresh()->facebook_post_id);
+    }
+
+    public function test_post_social_image_falls_back_to_brand_image(): void
+    {
+        $post = new Post([
+            'title' => 'Χωρίς εικόνα',
+            'slug' => 'xoris-eikona',
+            'excerpt' => '<p>Excerpt</p>',
+            'body' => '<p>Body</p>',
+        ]);
+
+        $url = $post->resolveSocialImageUrl();
+
+        $this->assertStringContainsString('gkellis-facebook-fallback.jpg', $url);
+    }
+}

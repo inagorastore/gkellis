@@ -40,4 +40,12 @@ return [
         'measurement_id' => env('GA_MEASUREMENT_ID'),
     ],
 
+    'facebook' => [
+        'app_id' => env('FACEBOOK_APP_ID', '937493685856349'),
+        'page_id' => env('FACEBOOK_PAGE_ID'),
+        'page_access_token' => env('FACEBOOK_PAGE_ACCESS_TOKEN'),
+        'graph_version' => env('FACEBOOK_GRAPH_VERSION', 'v25.0'),
+        'fallback_image' => env('FACEBOOK_FALLBACK_IMAGE', 'images/gkellis-facebook-fallback.jpg'),
+    ],
+
 ];

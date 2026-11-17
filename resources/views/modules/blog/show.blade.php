@@ -1,13 +1,5 @@
 @php
-    $metaImage = null;
-
-    if (!empty($post->og_image)) {
-        $metaImage = str_starts_with($post->og_image, 'http://') || str_starts_with($post->og_image, 'https://')
-            ? $post->og_image
-            : url(\Illuminate\Support\Facades\Storage::url($post->og_image));
-    } elseif (!empty($post->cover_image_path)) {
-        $metaImage = url(\Illuminate\Support\Facades\Storage::url($post->cover_image_path));
-    }
+    $metaImage = $post->resolveSocialImageUrl();
 @endphp
 
 <x-layouts.campaign

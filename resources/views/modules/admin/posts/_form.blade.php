@@ -110,6 +110,19 @@
         <input type="file" name="og_image_upload" accept="image/*" class="w-full rounded border-gray-300">
         <p class="text-xs text-gray-500">Αν λείπουν και URL και upload, γίνεται fallback στη Featured image.</p>
     </label>
+    @php
+        $facebookFallbackImage = asset(config('services.facebook.fallback_image', 'images/gkellis-facebook-fallback.jpg'));
+        $facebookPreviewImage = isset($post) && $post instanceof \App\Models\Post
+            ? $post->resolveSocialImageUrl(false)
+            : $facebookFallbackImage;
+        $facebookPreviewSource = 'Fallback brand image';
+        if (!empty($post?->og_image)) {
+            $facebookPreviewSource = 'Open Graph image';
+        } elseif (!empty($post?->cover_image_path)) {
+            $facebookPreviewSource = 'Featured image';
+        }
+        $facebookConfigured = filled(config('services.facebook.page_id')) && filled(config('services.facebook.page_access_token'));
+    @endphp
     @if (!empty($post?->og_image))
         @php
             $resolvedOgImage = str_starts_with($post->og_image, 'http://') || str_starts_with($post->og_image, 'https://')
@@ -127,24 +140,73 @@
             Remove current Open Graph image on save
         </label>
     @endif
-    @if (isset($post))
-        @php
-            $postPublicUrl = route('blog.show', ['post' => $post->slug]);
-            $facebookDebuggerUrl = 'https://developers.facebook.com/tools/debug/?q=' . urlencode($postPublicUrl);
-        @endphp
-        <div class="rounded border border-blue-100 bg-blue-50 p-3 text-sm text-blue-900">
-            <p class="font-medium">Facebook preview</p>
-            <p class="mt-1 text-xs text-blue-800">Μετά το save, κάνε scrape στο debugger για να ανανεωθεί η προεπισκόπηση.</p>
-            <div class="mt-2 flex flex-wrap gap-2">
+
+    <div class="space-y-3 rounded border border-blue-100 bg-blue-50 p-4 text-sm text-blue-900">
+        <div>
+            <p class="font-medium">Προεπισκόπηση εικόνας για Facebook</p>
+            <p class="mt-1 text-xs text-blue-800">
+                Προτεραιότητα: Open Graph → Featured image → brand fallback.
+                Τρέχουσα πηγή: {{ $facebookPreviewSource }}.
+            </p>
+        </div>
+        <img
+            id="facebook-preview-image"
+            src="{{ $facebookPreviewImage }}"
+            alt="Facebook share preview"
+            class="h-auto w-full max-w-xl rounded border border-blue-200 bg-white object-cover"
+            style="aspect-ratio: 1.91 / 1;"
+        >
+        @if (isset($post) && $post->exists)
+            @php
+                $postPublicUrl = route('blog.show', ['post' => $post->slug]);
+                $facebookDebuggerUrl = 'https://developers.facebook.com/tools/debug/?q=' . urlencode($postPublicUrl);
+            @endphp
+            <div class="flex flex-wrap gap-2">
                 <a href="{{ $postPublicUrl }}" target="_blank" rel="noopener" class="rounded border border-blue-200 bg-white px-3 py-1.5 text-xs font-medium text-blue-900">Open public article</a>
                 <a href="{{ $facebookDebuggerUrl }}" target="_blank" rel="noopener" class="rounded border border-blue-200 bg-white px-3 py-1.5 text-xs font-medium text-blue-900">Open Facebook Sharing Debugger</a>
             </div>
-        </div>
-    @endif
+        @endif
+    </div>
+
     <label class="inline-flex items-center gap-2 text-sm">
         <input type="checkbox" name="is_published" value="1" @checked(old('is_published', $post->is_published ?? false))>
         Publish
     </label>
+
+    @if (!empty($post?->facebook_post_id))
+        <div class="rounded border border-green-200 bg-green-50 p-3 text-sm text-green-900">
+            <p class="font-medium">Ήδη δημοσιευμένο στο Facebook</p>
+            <p class="mt-1 text-xs">
+                {{ optional($post->facebook_published_at)->format('d/m/Y H:i') ?? '—' }}
+                · ID: {{ $post->facebook_post_id }}
+            </p>
+            @if ($post->facebookShareUrl())
+                <a href="{{ $post->facebookShareUrl() }}" target="_blank" rel="noopener" class="mt-2 inline-block text-xs font-medium underline">
+                    Άνοιγμα δημοσίευσης
+                </a>
+            @endif
+        </div>
+    @else
+        <label class="inline-flex items-start gap-2 text-sm">
+            <input
+                type="checkbox"
+                name="publish_to_facebook"
+                value="1"
+                class="mt-1"
+                @checked(old('publish_to_facebook'))
+                @disabled(! $facebookConfigured)
+            >
+            <span>
+                Δημοσίευση στο Facebook
+                <span class="mt-1 block text-xs text-gray-500">
+                    Ανέβασμα στη Σελίδα με τίτλο, excerpt και link του άρθρου. Απαιτείται «Publish».
+                    @unless ($facebookConfigured)
+                        <span class="text-red-600">Ρυθμίστε FACEBOOK_PAGE_ID και FACEBOOK_PAGE_ACCESS_TOKEN στο .env.</span>
+                    @endunless
+                </span>
+            </span>
+        </label>
+    @endif
     <div class="flex flex-wrap items-center gap-2">
         <button type="button" id="preview-post-button" class="rounded border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700">
             Preview
