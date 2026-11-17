@@ -98,6 +98,47 @@ class PostFacebookPublishTest extends TestCase
         $this->assertSame('111_222', $post->fresh()->facebook_post_id);
     }
 
+    public function test_admin_can_republish_post_to_facebook(): void
+    {
+        config([
+            'services.facebook.page_id' => '123456789',
+            'services.facebook.page_access_token' => 'test-token',
+            'services.facebook.graph_version' => 'v25.0',
+        ]);
+
+        Http::fake([
+            'graph.facebook.com/*' => Http::response(['id' => '123456789_999888777'], 200),
+        ]);
+
+        $user = User::factory()->create();
+        $post = Post::query()->create([
+            'user_id' => $user->id,
+            'title' => 'Επαναδημοσίευση',
+            'slug' => 'epanadimosiefsi',
+            'excerpt' => '<p>Περιγραφή&nbsp;με&nbsp;nbsp</p>',
+            'body' => '<p>Body</p>',
+            'is_published' => true,
+            'published_at' => now(),
+            'facebook_post_id' => '111_222',
+            'facebook_published_at' => now()->subDay(),
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('admin.posts.republish-facebook', $post))
+            ->assertRedirect(route('admin.posts.edit', $post));
+
+        $post->refresh();
+
+        $this->assertSame('123456789_999888777', $post->facebook_post_id);
+        $this->assertNotNull($post->facebook_published_at);
+
+        Http::assertSent(function ($request): bool {
+            return str_contains($request->url(), 'graph.facebook.com/v25.0/123456789/feed')
+                && $request['access_token'] === 'test-token'
+                && ! str_contains((string) $request['message'], '&nbsp;');
+        });
+    }
+
     public function test_post_social_image_falls_back_to_brand_image(): void
     {
         $post = new Post([

@@ -16,6 +16,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function ():
     Route::resource('pages', AdminPageController::class)->except(['show']);
     Route::post('posts/body-images', [AdminPostBodyImageController::class, 'store'])
         ->name('posts.body-images.store');
+    Route::post('posts/{post}/republish-facebook', [AdminPostController::class, 'republishToFacebook'])
+        ->name('posts.republish-facebook');
     Route::resource('posts', AdminPostController::class)->except(['show']);
     Route::resource('media', AdminMediaController::class)->except(['show']);
 });

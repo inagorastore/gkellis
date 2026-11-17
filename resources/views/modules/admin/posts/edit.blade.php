@@ -6,6 +6,16 @@
                 @method('PUT')
                 @include('modules.admin.posts._form', ['submitLabel' => 'Save Changes'])
             </form>
+            @if (!empty($post->facebook_post_id))
+                <form
+                    id="republish-facebook-form"
+                    method="POST"
+                    action="{{ route('admin.posts.republish-facebook', $post) }}"
+                    class="hidden"
+                >
+                    @csrf
+                </form>
+            @endif
             <form method="POST" action="{{ route('admin.posts.destroy', $post) }}">
                 @csrf
                 @method('DELETE')

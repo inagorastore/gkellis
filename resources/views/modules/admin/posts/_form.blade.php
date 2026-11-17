@@ -191,11 +191,29 @@
                 {{ optional($post->facebook_published_at)->format('d/m/Y H:i') ?? '—' }}
                 · ID: {{ $post->facebook_post_id }}
             </p>
-            @if ($post->facebookShareUrl())
-                <a href="{{ $post->facebookShareUrl() }}" target="_blank" rel="noopener" class="mt-2 inline-block text-xs font-medium underline">
-                    Άνοιγμα δημοσίευσης
-                </a>
-            @endif
+            <div class="mt-3 flex flex-wrap items-center gap-2">
+                @if ($post->facebookShareUrl())
+                    <a href="{{ $post->facebookShareUrl() }}" target="_blank" rel="noopener" class="inline-block rounded border border-green-300 bg-white px-3 py-1.5 text-xs font-medium text-green-900">
+                        Άνοιγμα δημοσίευσης
+                    </a>
+                @endif
+                <button
+                    type="submit"
+                    form="republish-facebook-form"
+                    class="rounded bg-[#1877f2] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#0f66d8] disabled:cursor-not-allowed disabled:opacity-50"
+                    @disabled(! $facebookConfigured)
+                    onclick="return confirm('Θα δημιουργηθεί ΝΕΑ ανάρτηση στο Facebook με το τρέχον link preview. Η παλιά δεν διαγράφεται αυτόματα. Συνέχεια;')"
+                >
+                    Επαναδημοσίευση στο Facebook
+                </button>
+            </div>
+            <p class="mt-3 text-xs text-green-800">
+                Αν η προεπισκόπηση εικόνας είναι κενή, κάντε πρώτα Scrape Again στο Sharing Debugger και μετά επαναδημοσίευση.
+                Δημιουργείται <strong>νέα</strong> ανάρτηση· η παλιά δεν διαγράφεται αυτόματα από το Facebook.
+                @unless ($facebookConfigured)
+                    <span class="text-red-600">Ρυθμίστε FACEBOOK_PAGE_ID και FACEBOOK_PAGE_ACCESS_TOKEN στο .env.</span>
+                @endunless
+            </p>
         </div>
     @else
         <label class="inline-flex items-start gap-2 text-sm">

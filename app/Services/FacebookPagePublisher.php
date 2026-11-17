@@ -17,7 +17,7 @@ class FacebookPagePublisher
             && filled(config('services.facebook.page_access_token'));
     }
 
-    public function publish(Post $post): string
+    public function publish(Post $post, bool $force = false): string
     {
         if (! $this->isConfigured()) {
             throw new RuntimeException('Η σύνδεση Facebook δεν είναι ρυθμισμένη (.env).');
@@ -27,8 +27,15 @@ class FacebookPagePublisher
             throw new RuntimeException('Το άρθρο πρέπει να είναι δημοσιευμένο στο site πριν ανέβει στο Facebook.');
         }
 
-        if (filled($post->facebook_post_id)) {
+        if (filled($post->facebook_post_id) && ! $force) {
             throw new RuntimeException('Το άρθρο έχει ήδη δημοσιευτεί στο Facebook.');
+        }
+
+        if ($force && filled($post->facebook_post_id)) {
+            $post->forceFill([
+                'facebook_post_id' => null,
+                'facebook_published_at' => null,
+            ])->save();
         }
 
         $pageId = (string) config('services.facebook.page_id');
@@ -72,7 +79,8 @@ class FacebookPagePublisher
 
     private function buildMessage(Post $post): string
     {
-        $excerpt = trim(preg_replace('/\s+/u', ' ', strip_tags((string) $post->excerpt)) ?? '');
+        $excerpt = html_entity_decode(strip_tags((string) $post->excerpt), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $excerpt = trim(preg_replace('/\s+/u', ' ', $excerpt) ?? '');
         $parts = array_filter([
             trim((string) $post->title),
             $excerpt !== '' ? $excerpt : null,

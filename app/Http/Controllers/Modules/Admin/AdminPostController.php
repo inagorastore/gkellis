@@ -428,6 +428,42 @@ class AdminPostController extends Controller
         Storage::disk('public')->delete($value);
     }
 
+    public function republishToFacebook(Post $post, FacebookPagePublisher $publisher): RedirectResponse
+    {
+        if (! $post->is_published) {
+            return redirect()
+                ->route('admin.posts.edit', $post)
+                ->with('status', 'Facebook: το άρθρο πρέπει να είναι δημοσιευμένο στο site.');
+        }
+
+        if (! $publisher->isConfigured()) {
+            return redirect()
+                ->route('admin.posts.edit', $post)
+                ->with('status', 'Facebook: ρυθμίστε FACEBOOK_PAGE_ID και FACEBOOK_PAGE_ACCESS_TOKEN στο .env.');
+        }
+
+        try {
+            $facebookPostId = $publisher->publish($post, force: true);
+
+            return redirect()
+                ->route('admin.posts.edit', $post)
+                ->with(
+                    'status',
+                    'Δημιουργήθηκε νέα δημοσίευση στο Facebook (ID: '.$facebookPostId.'). Η παλιά ανάρτηση δεν διαγράφεται αυτόματα — σβήστε την χειροκίνητα από τη Σελίδα αν χρειάζεται.'
+                );
+        } catch (RuntimeException $exception) {
+            return redirect()
+                ->route('admin.posts.edit', $post)
+                ->with('status', 'Facebook: '.$exception->getMessage());
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return redirect()
+                ->route('admin.posts.edit', $post)
+                ->with('status', 'Facebook: απροσδόκητο σφάλμα κατά την επαναδημοσίευση.');
+        }
+    }
+
     private function maybePublishToFacebook(Post $post, bool $publishToFacebook, FacebookPagePublisher $publisher): ?string
     {
         if (! $publishToFacebook) {
