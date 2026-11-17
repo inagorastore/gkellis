@@ -116,6 +116,69 @@
             margin-top: 20px;
         }
 
+        .facebook-follow-cta {
+            margin-top: 28px;
+            padding: 18px 18px 16px;
+            border: 1px solid #d7e3ff;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #f5f8ff 0%, #eef3ff 100%);
+            display: grid;
+            gap: 14px;
+        }
+
+        .facebook-follow-cta__title {
+            margin: 0 0 4px;
+            color: #1e2442;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -.01em;
+        }
+
+        .facebook-follow-cta__text {
+            margin: 0;
+            color: #5b638a;
+            font-size: .95rem;
+            line-height: 1.45;
+        }
+
+        .facebook-follow-cta__actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .facebook-follow-cta__button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .55rem;
+            background: #1877f2;
+            color: #fff;
+            padding: .8rem 1.2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: .95rem;
+            transition: background .2s, transform .2s;
+        }
+
+        .facebook-follow-cta__icon {
+            width: 1.15rem;
+            height: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .facebook-follow-cta__button:hover {
+            background: #0f66d8;
+            transform: translateY(-1px);
+        }
+
+        .facebook-follow-cta__like {
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+        }
+
         .article-nav {
             margin-top: 28px;
             padding-top: 24px;
@@ -275,6 +338,8 @@
                 <div class="article-content">
                     {!! $post->body !!}
                 </div>
+
+                <x-facebook-follow-cta />
 
                 @if ($previousPost || $nextPost)
                     <nav class="article-nav {{ ($previousPost && $nextPost) ? '' : 'is-single' }}" aria-label="Πλοήγηση άρθρων">
